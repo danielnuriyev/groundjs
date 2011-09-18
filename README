@@ -1,0 +1,11 @@
+All existing JavaScript frameworks focus on the UI.
+The goal of groundjs is to extend JavaScript language itself.
+
+In some cases groundjs adds functions to existing classes.
+For example, it adds trim to String.
+
+In some cases groundjs adds utilities: numUtil, timeUtil etc.
+
+We also plan to add 
+- Java implementation of CommonJS
+- Functions that will allow JavaScript to run on Java
