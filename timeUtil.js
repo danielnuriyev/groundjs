@@ -2,6 +2,13 @@ if(typeof groundjs === 'undefined') throw 'Requires groundjs/prototype.js';
 if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs.Ground';
 
 groundjs.TimeUtil = {
+    /**
+     * Parses a string such as '1 minute', '2 hours' etc. 
+     * and returns this timespan in milliseconds.
+     * Supports: minutes, hours, days, weeks, months, years.
+     * 
+     * TODO: add seconds, centuries, millenia
+     */
     parseTimeSpan: function(t){
         
         if(t == null) return null;
