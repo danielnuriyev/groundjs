@@ -4,6 +4,16 @@ if(typeof String.trim === 'undefined'){
     };
 };
 
+if(typeof String.startsWith === 'undefined'){
+    String.prototype.startsWith = function(s){
+        if(s == null) return false;
+        if(typeof s !== 'string'){
+            s = s.toString();
+        }
+        return this.indexOf(s) == 0;
+    };
+};
+
 if(typeof String.endsWith === 'undefined'){
     String.prototype.endsWith = function(s){
         if(s == null) return false;

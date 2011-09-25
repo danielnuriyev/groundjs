@@ -1,6 +1,19 @@
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/prototype.js';
 if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs.Ground';
 
+groundjs.TimeUnit = {
+    milliseconds: 'milliseconds',
+    seconds: 'seconds',
+    minutes: 'minutes',
+    hours: 'hours',
+    days: 'days',
+    weeks: 'weeks',
+    months: 'months',
+    years: 'years',
+    centuries: 'centuries',
+    millenia: 'millenia'
+}
+
 groundjs.TimeUtil = {
     /**
      * Parses a string such as '1 minute', '2 hours' etc. 
