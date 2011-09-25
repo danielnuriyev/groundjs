@@ -30,7 +30,7 @@ groundjs.NumUtil = {
     },
     getRandomArrayElement: function(obj){
         if(obj.length){
-            return obj[new Date().getTime() % obj.length];
+            return obj[Math.floor(Math.random() * obj.length)];
         } else {
             throw 'Not an array';
         }

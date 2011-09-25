@@ -20,6 +20,7 @@ if(typeof String.endsWith === 'undefined'){
  * @param pad string used for padding
  * @param max maximum length of the resulting string
  * @side 'left' to pad on the left (default), 'right' to pad on the right
+ * @return padded string
  */
 if(typeof String.pad === 'undefined'){
     String.prototype.pad = function(s, pad, max, side){
