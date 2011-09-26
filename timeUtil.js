@@ -45,9 +45,15 @@ groundjs.TimeUtil = {
         } else if(t.indexOf('week') > -1){
             return v * 7 * 24 * 60 * 60 * 1000;
         } else if(t.indexOf('month') > -1){
-            return v * 31 * 24 * 60 * 60 * 1000;
+            var a = new Date();
+            var b = new Date();
+            b.setMonth(b.getMonth() - v);
+            return a.getTime() - b.getTime();
         } else if(t.indexOf('year') > -1){
-            return v * 366 * 24 * 60 * 60 * 1000;
+            var a = new Date();
+            var b = new Date();
+            b.setFullYear(b.getFullYear() - v);
+            return a.getTime() - b.getTime();
         } else return null;
     }
 }
