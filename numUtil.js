@@ -6,14 +6,14 @@ groundjs.NumUtil = {
         var s = Number.MIN_VALUE;
         var e = Number.MAX_VALUE;
         if(start != null){
-            if(typeof start === groundjs.Types.NUMBER){
+            if(typeof start === groundjs.Type.NUMBER){
                 s = start;
             } else {
                 throw 'start is not a number';
             }
         }
         if(end != null){
-            if(typeof end === groundjs.Types.NUMBER){
+            if(typeof end === groundjs.Type.NUMBER){
                 e = end;
             } else {
                 throw 'end is not a number';

@@ -4,9 +4,9 @@ groundjs.Ground = {}
 
 /*
  * JavaScript types
- * Using groundjs.Types saves string creation
+ * Using groundjs.Type saves string creation
  */
-Types = {
+Type = {
     UNDEFINED: 'undefined',
     BOOLEAN: 'boolean',
     NUMBER: 'number',
