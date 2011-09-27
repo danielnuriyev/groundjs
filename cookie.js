@@ -21,7 +21,7 @@ groundjs.Cookie = {
         if(typeof value === groundjs.Type.STRING){
             value.trim();
         } else if(value == null){
-            value = '';
+            value = String.empty;
         }
         
         if(typeof time === groundjs.Type.NUMBER){
@@ -48,7 +48,7 @@ groundjs.Cookie = {
             
             value += '; expires=' + d.toUTCString();
         }
-        document.cookie = name + '=' + value;
+        document.cookie = name + String.equal + value;
     },
 
     get: function(name){
@@ -61,12 +61,12 @@ groundjs.Cookie = {
             name.trim();
         }
         
-        var cookies = document.cookie.split(';');
+        var cookies = document.cookie.split(String.semicolon);
         var count = cookies.length;
         var cookie, idx, n, v;
         for(var i = 0; i < count; i++) {
             cookie = cookies[i];
-            idx = cookie.indexOf('=');
+            idx = cookie.indexOf(String.equal);
             n = cookie.substr(0, idx);
             if (n == name) {
                 v = cookie.substr(idx + 1);

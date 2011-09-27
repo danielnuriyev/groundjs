@@ -6,7 +6,7 @@ groundjs.Ground = {}
  * JavaScript types
  * Using groundjs.Type saves string creation
  */
-Type = {
+groundjs.Type = {
     UNDEFINED: 'undefined',
     BOOLEAN: 'boolean',
     NUMBER: 'number',
@@ -14,4 +14,3 @@ Type = {
     OBJECT: 'object',
     FUNCTION: 'function'
 }
-

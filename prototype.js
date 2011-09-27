@@ -1,5 +1,56 @@
 // String -----------------------------------------------------
 
+if(typeof String.empty === 'undefined'){  String.empty = ''; }
+if(typeof String.dot === 'undefined'){  String.dot = '.'; }
+if(typeof String.period === 'undefined'){  String.period = '.'; }
+if(typeof String.underscore === 'undefined'){  String.underscore = '_'; }
+if(typeof String.colon === 'undefined'){  String.colon = ':'; }
+if(typeof String.semicolon === 'undefined'){  String.semicolon = ';'; }
+if(typeof String.comma === 'undefined'){  String.comma = ','; }
+if(typeof String.question === 'undefined'){  String.question = '?'; }
+if(typeof String.equal === 'undefined'){  String.equal = '='; }
+if(typeof String.dash === 'undefined'){  String.dash = '-'; }
+if(typeof String.hyphen === 'undefined'){  String.hyphen = '-'; }
+if(typeof String.minus === 'undefined'){  String.minus = '-'; }
+if(typeof String.slash === 'undefined'){  String.slash = '/'; }
+if(typeof String.divide === 'undefined'){  String.divide = '/'; }
+if(typeof String.plus === 'undefined'){  String.plus = '+'; }
+if(typeof String.multiply === 'undefined'){  String.multiply = '*'; }
+if(typeof String.asterisk === 'undefined'){  String.asterisk = '*'; }
+if(typeof String.pipe === 'undefined'){  String.pipe = '|'; }
+if(typeof String.pound === 'undefined'){  String.pound = '#'; }
+if(typeof String.hash === 'undefined'){  String.hash = '#'; }
+if(typeof String.dollar === 'undefined'){  String.dollar = '$'; }
+if(typeof String.ampersand === 'undefined'){  String.ampersand = '&'; }
+if(typeof String.percent === 'undefined'){  String.percent = '%'; }
+if(typeof String.circumflex === 'undefined'){  String.circumflex = '^'; }
+if(typeof String.exclamation === 'undefined'){  String.exclamation = '!'; }
+if(typeof String.at === 'undefined'){  String.at = '@'; }
+if(typeof String.ellipsis === 'undefined'){  String.ellipsis = '...'; }
+if(typeof String.singleQuote === 'undefined'){  String.singleQuote = "'"; }
+if(typeof String.doubleQuote === 'undefined'){  String.doubleQuote = '"'; }
+if(typeof String.leftBracket === 'undefined'){  String.leftBracket = '('; }
+if(typeof String.rightBracket === 'undefined'){  String.rightBracket = ')'; }
+
+if(typeof String.leftAngleBracket === 'undefined'){  String.leftAngleBracket = '<'; }
+if(typeof String.rightAngleBracket === 'undefined'){  String.rightAngleBracket = '>'; }
+if(typeof String.less === 'undefined'){  String.less = '<'; }
+if(typeof String.greater === 'undefined'){  String.greater = '>'; }
+
+if(typeof String.leftSquareBracket === 'undefined'){  String.leftSquareBracket = '['; }
+if(typeof String.rightSquareBracket === 'undefined'){  String.rightSquareBracket = ']'; }
+
+if(typeof String.leftCurlyBracket === 'undefined'){  String.leftCurlyBracket = '{'; }
+if(typeof String.rightCurlyBracket === 'undefined'){  String.rightCurlyBracket = '}'; }
+
+if(typeof String.greaterEqual === 'undefined'){  String.greaterEqual = '>='; }
+if(typeof String.lessEqual === 'undefined'){  String.lessEqual = '<='; }
+
+if(typeof String.space === 'undefined'){  String.space = ' '; }
+if(typeof String.newLine === 'undefined'){  String.newLine = '\n'; }
+if(typeof String.carriageReturn === 'undefined'){  String.carriageReturn = '\r'; }
+if(typeof String.tab === 'undefined'){  String.tab = '\t'; }
+
 if(typeof String.trim === 'undefined'){
     String.prototype.trim = function(){
         return this.replace(/^\s+|\s+$/g, '');
