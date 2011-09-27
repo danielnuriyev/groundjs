@@ -14,17 +14,17 @@ groundjs.Cookie = {
     set: function(name, value, time, timeUnit) {
         
         //null, !string, empty
-        if(name == null || (typeof name === 'string' && name.trim().length == 0)){
+        if(name == null || (typeof name === groundjs.Types.STRING && name.trim().length == 0)){
             throw 'Cannot set empty cookie name';
         }
         
-        if(typeof value === 'string'){
+        if(typeof value === groundjs.Types.STRING){
             value.trim();
         } else if(value == null){
             value = '';
         }
         
-        if(typeof time === 'number'){
+        if(typeof time === groundjs.Types.NUMBER){
             var d = new Date();
             
             if(timeUnit == null){
@@ -53,11 +53,11 @@ groundjs.Cookie = {
 
     get: function(name){
         
-        if(typeof document.cookie === 'undefined' || document.cookie == null){
+        if(typeof document.cookie === groundjs.Types.UNDEFINED || document.cookie == null){
             return null;
         }
         
-        if(typeof name === 'string'){
+        if(typeof name === groundjs.Types.STRING){
             name.trim();
         }
         

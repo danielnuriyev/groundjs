@@ -25,7 +25,7 @@ groundjs.TimeUtil = {
     parseTimeSpan: function(t){
         
         if(t == null) return null;
-        if(typeof t !== 'string') throw 'Invalid argument'
+        if(typeof t !== groundjs.Types.STRING) throw 'Invalid argument'
         
         var re = new RegExp('[0-9]+');
         var match = re.exec(t);
