@@ -73,5 +73,9 @@ groundjs.Cookie = {
                 return unescape(v);
             }
         }
+    },
+    
+    remove: function(name){
+        document.cookie = name + String.equal + Date.now();
     }
 };

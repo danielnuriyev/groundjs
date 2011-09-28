@@ -12,6 +12,9 @@ groundjs.TimeUnit = {
     years: 'years',
     centuries: 'centuries',
     millenia: 'millenia'
+    
+    //get: function(){}
+    
 }
 
 groundjs.TimeUtil = {

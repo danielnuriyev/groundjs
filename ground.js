@@ -12,5 +12,15 @@ groundjs.Type = {
     NUMBER: 'number',
     STRING: 'string',
     OBJECT: 'object',
-    FUNCTION: 'function'
+    FUNCTION: 'function',
+    
+    isArray: function(obj){
+        if(typeof obj === UNDEFINED || obj == null){
+            return false;
+        }
+        
+        return typeof obj.length !== UNDEFINED;
+        
+    }
+    
 }
