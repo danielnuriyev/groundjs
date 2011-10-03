@@ -2,80 +2,41 @@ if(typeof groundjs === 'undefined') throw 'Requires groundjs/prototype.js';
 if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs.Ground';
 
 groundjs.Cookie = {
+    get: function (sKey) {
+        if (!sKey || !this.hasItem(sKey)) { return null; }
+        return unescape(document.cookie.replace(new RegExp("(?:^|.*;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"), "$1"));
+    },
     /**
-     * Sets a cookie
-     * @param name name of the cookie
-     * @param value value of the cookie
-     * @param time time after which the cookie will expire. 
-     *          By default the number of days.
-     * @param timeUnit. If not set, expiration is counted in days. 
-     *          Possible values: 'minutes', 'hours', 'days', 'weeks', 'months', 'years'
-     */
-    set: function(name, value, time, timeUnit) {
-        
-        //null, !string, empty
-        if(name == null || (typeof name === groundjs.Type.STRING && name.trim().length == 0)){
-            throw 'Cannot set empty cookie name';
+      * docCookies.setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure)
+      *
+      * @argument sKey (String): the name of the cookie;
+      * @argument sValue (String): the value of the cookie;
+      * @optional argument vEnd (Number, String, Date Object or null): the max-age in seconds (e.g., 31536e3 for a year) or the
+      *  expires date in GMTString format or in Date Object format; if not specified it will expire at the end of session; 
+      * @optional argument sPath (String or null): e.g., "/", "/mydir"; if not specified, defaults to the current path of the current document location;
+      * @optional argument sDomain (String or null): e.g., "example.com", ".example.com" (includes all subdomains) or "subdomain.example.com"; if not
+      * specified, defaults to the host portion of the current document location;
+      * @optional argument bSecure (Boolean or null): cookie will be transmitted only over secure protocol as https;
+      * @return undefined;
+      **/
+    set: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+        if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/.test(sKey)) { return; }
+        var sExpires = "";
+        if (vEnd) {
+          switch (typeof vEnd) {
+            case "number": sExpires = "; max-age=" + vEnd; break;
+            case "string": sExpires = "; expires=" + vEnd; break;
+            case "object": if (vEnd.hasOwnProperty("toGMTString")) { sExpires = "; expires=" + vEnd.toGMTString(); } break;
+          }
         }
-        
-        if(typeof value === groundjs.Type.STRING){
-            value.trim();
-        } else if(value == null){
-            value = String.empty;
-        }
-        
-        if(typeof time === groundjs.Type.NUMBER){
-            var d = new Date();
-            
-            if(timeUnit == null){
-                d.setDate(d.getDate() + time);
-            } else{
-                timeUnit = timeUnit.trim().toLowerCase();
-                if(timeUnit.indexOf('minute') == 0){
-                    d.setMinutes(d.getMinutes() + time);
-                } else if(timeUnit.indexOf('hour') == 0){
-                    d.setHours(d.getHours() + time);
-                } else if(timeUnit.indexOf('week') == 0){
-                    d.setDate(d.getDate() + time * 7);
-                } else if(timeUnit.indexOf('month') == 0){
-                    d.setMonth(d.getMonth() + time);
-                } else if(timeUnit.indexOf('year') == 0){
-                    d.setFullYear(d.getFullYear() + time);
-                } else {
-                    d.setDate(d.getDate() + time);
-                }
-            }
-            
-            value += '; expires=' + d.toUTCString();
-        }
-        document.cookie = name + String.equal + value;
+        document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
     },
+    remove: function (sKey) {
+        if (!sKey || !this.hasItem(sKey)) { return; }
+        var oExpDate = new Date();
+        oExpDate.setDate(oExpDate.getDate() - 1);
+        document.cookie = escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/";
+    },
+    has: function (sKey) { return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie); }
 
-    get: function(name){
-        
-        if(typeof document.cookie === groundjs.Type.UNDEFINED || document.cookie == null){
-            return null;
-        }
-        
-        if(typeof name === groundjs.Type.STRING){
-            name.trim();
-        }
-        
-        var cookies = document.cookie.split(String.semicolon);
-        var count = cookies.length;
-        var cookie, idx, n, v;
-        for(var i = 0; i < count; i++) {
-            cookie = cookies[i];
-            idx = cookie.indexOf(String.equal);
-            n = cookie.substr(0, idx);
-            if (n == name) {
-                v = cookie.substr(idx + 1);
-                return unescape(v);
-            }
-        }
-    },
-    
-    remove: function(name){
-        document.cookie = name + String.equal + Date.now();
-    }
 };

@@ -11,9 +11,21 @@ groundjs.TimeUnit = {
     months: 'months',
     years: 'years',
     centuries: 'centuries',
-    millenia: 'millenia'
+    millenia: 'millenia',
     
-    //get: function(){}
+    get: function(s){
+        if(s == groundjs.TimeUnit.milliseconds) return groundjs.TimeUnit.milliseconds;
+        else if(s == groundjs.TimeUnit.seconds) return groundjs.TimeUnit.seconds;
+        else if(s == groundjs.TimeUnit.minutes) return groundjs.TimeUnit.minutes;
+        else if(s == groundjs.TimeUnit.hours) return groundjs.TimeUnit.hours;
+        else if(s == groundjs.TimeUnit.days) return groundjs.TimeUnit.days;
+        else if(s == groundjs.TimeUnit.weeks) return groundjs.TimeUnit.weeks;
+        else if(s == groundjs.TimeUnit.months) return groundjs.TimeUnit.months;
+        else if(s == groundjs.TimeUnit.years) return groundjs.TimeUnit.years;
+        else if(s == groundjs.TimeUnit.centuries) return groundjs.TimeUnit.centuries;
+        else if(s == groundjs.TimeUnit.millenia) return groundjs.TimeUnit.millenia;
+        else return null;
+    }
     
 }
 
