@@ -1,4 +1,4 @@
-if(typeof groundjs === 'undefined') throw 'Requires groundjs/prototype.js';
+if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
 
 groundjs.Ground = {}
 
