@@ -26,6 +26,13 @@ groundjs.HTTP = {
      *  onError(optional): function
      */
 groundjs.ajax = function(opts){
+
+    var g = groundjs;
+    /*
+     * TODO:
+     * encode params?
+     * jquery props
+     */
     
     var readyState = {
         UNSENT:0,
@@ -34,15 +41,8 @@ groundjs.ajax = function(opts){
         LOADING: 3,
         DONE: 4
         }
-    
-    
-    /*
-     * TODO:
-     * encode params?
-     * jquery props
-     */
-    
-    var call = function(opts){
+
+
         if(!opts.url){
             throw 'Null URL';
         }
@@ -58,59 +58,62 @@ groundjs.ajax = function(opts){
             return 'Unsupported protocol';
         }
         
-        var r = window.ActiveXObject ? 
-            (groundjs.URL.isLocal(url) ?  new window.ActiveXObject( "Microsoft.XMLHTTP" ) : new window.XMLHttpRequest()) : 
-            new window.XMLHttpRequest();
-	
-        r.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+        //console.log('url: ' + url);
         
+        var r = window.ActiveXObject ? 
+            (g.URL.isLocal(url) ?  new window.ActiveXObject( "Microsoft.XMLHTTP" ) : new window.XMLHttpRequest()) : 
+            new window.XMLHttpRequest();
+                
         var method = opts.method;
         if(!method){
-            method = groundjs.HTTP.GET;
+            method = g.HTTP.method.GET;
         }
         
-        if(method == groundjs.HTTP.GET){
+        if(method == g.HTTP.method.GET){
             if(opts.data){
-                url += groundjs.URL.appendParameters(url,data);
+                url = g.URL.appendParameters(url,opts.data);
             }
         }
         
-        var async = typeof opts.async === groundjs.Type.UNDEFINED || options.async == null ? true : opts.async;
+        var async = typeof opts.async === g.Type.UNDEFINED || options.async == null ? true : opts.async;
         
         if(opts.username){
             r.open(method, url, async, opts.username, opts.password);
         } else {
             r.open(method, url, async);
         }
+        r.setRequestHeader("content-type", "application/x-www-form-urlencoded");
         r.onreadystatechange = function(){
-            if (this.readyState < groundjs.ajax.readyState.DONE) return;
+            if (this.readyState < readyState.DONE) return;
             if (this.status >= 200 && this.status < 300) {
                 if(opts.onSuccess){
                     var response = this.responseText;
-                    if(opts.dataType == 'json'){
-                        response.trim();
-                        response = eval(response);
+                    if(opts.dataType == 'json' && response){
+                        response = g.StringUtil.trim(response);
+                        if(response){
+                            response = eval('(' + response + ')');
+                        }
                     }
                     opts.onSuccess(response);
                 } 
             } else {
                 if(opts.onError){
                     var response = this.responseText;
-                    if(opts.dataType == 'json'){
-                        response = eval(response);
+                    if(opts.dataType == 'json' && response){
+                        response = g.StringUtil.trim(response);
+                        if(response){
+                            response = eval('(' + response + ')');
+                        }
                     }
                     opts.onError(response);
                 } 
             }
         }
 
-        if(method == groundjs.HTTP.POST && opts.data){
-            r.send(opts.data);
+        if(method == g.HTTP.method.POST && opts.data){
+            r.send(g.URL.toParameters(opts.data));
         } else {        
             r.send();
         }
-    }
-    
-    call(opts);
     
 }

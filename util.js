@@ -1,4 +1,6 @@
-StringUtil = {
+if(!groundjs) groundjs = {};
+
+groundjs.StringUtil = {
 
     trim : function(s){
         return s.replace(/^\s+|\s+$/g, '');
@@ -74,7 +76,7 @@ StringUtil = {
 
 }
 
-ArrayUtil = {
+groundjs.ArrayUtil = {
     /**
      * The array must be sorted
      */
@@ -90,5 +92,3 @@ ArrayUtil = {
         return null;
     }
 }
-
-if(!groundjs) groundjs = {};

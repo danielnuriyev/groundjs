@@ -3,7 +3,8 @@ if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs.Ground';
 
 groundjs.Cookie = {
     get: function (sKey) {
-        if (!sKey || !this.hasItem(sKey)) { return null; }
+        console.log(document.cookie);
+        if (!sKey || !this.has(sKey)) { return null; }
         return unescape(document.cookie.replace(new RegExp("(?:^|.*;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"), "$1"));
     },
     /**
@@ -32,7 +33,7 @@ groundjs.Cookie = {
         document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
     },
     remove: function (sKey) {
-        if (!sKey || !this.hasItem(sKey)) { return; }
+        if (!sKey || !this.has(sKey)) { return; }
         var oExpDate = new Date();
         oExpDate.setDate(oExpDate.getDate() - 1);
         document.cookie = escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/";

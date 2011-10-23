@@ -1,8 +1,9 @@
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
 if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs.Ground';
 
-groundjs.URL = { 
-    parse: function(url){
+groundjs.URL = function(){ 
+    var g = groundjs;
+    var parse = function(url){
 		var regex = /^([^:]*:\/\/)?([^:]*:[^@]*@)?([^\/:\?]*\.[^\/:\?]*)?(:[^\/]*)?(\/[^?#]*)?(\?[^#]*)?(#.*)?$/i;
 		//var url = uri.match(/^([^:]*:\/\/)?([^:]*:[^@]*@)?([^\/:]*\.[^\/:]*)?(:[^\/]*)?(\/[^?#]*)?(\?[^#]*)?(#.*)?$/i);
 		url = url.match(regex);
@@ -30,13 +31,13 @@ groundjs.URL = {
                 
                 return url;    
                    
-    },
-    isLocal: function(url){
+    }
+    var isLocal = function(url){
         var re = /^(?:about|app|app\-storage|.+\-extension|file|widget):$/;
-        url = groundjs.URL.parse(url);
+        url = g.URL.parse(url);
         return re.test(url.protocol);
-    },    
-    toParameters: function(obj){
+    }
+    var toParameters = function(obj){
         
         if(obj == null) return '';
         
@@ -45,15 +46,15 @@ groundjs.URL = {
             if(s.length > 0){
                 s += '&';
             }
-            s += name + '=' + obj[name];
+            s += encodeURIComponent(name) + '=' + encodeURIComponent(obj[name]);
         }
         return s;
-    },
-    appendParameters: function(url, parameters){
+    }
+    var appendParameters = function(url, parameters){
         if(parameters == null){
             return url;
         }
-        url = StringUtil.trim();
+        url = g.StringUtil.trim(url);
         if(parameters.length == 0){
             return url;
         }
@@ -64,11 +65,19 @@ groundjs.URL = {
             url += '&';
         }
         
-        if(typeof parameters === groundjs.Type.STRING){
+        if(typeof parameters === g.Type.STRING){
             url += parameters;
         } else {
-            url += groundjs.URL.toParameters(parameters);
+            url += g.URL.toParameters(parameters);
         }
         return url;
     }
-}
+    
+    return {
+        parse:parse,
+        isLocal:isLocal,
+        toParameters:toParameters,
+        appendParameters:appendParameters
+    }
+    
+}();
