@@ -1,11 +1,13 @@
 if(!groundjs) groundjs = {};
 
-groundjs.StringUtil = {
+groundjs.StringUtil = function(){
 
-    trim : function(s){
+    var g = groundjs;
+
+    var trim = function(s){
         return s.replace(/^\s+|\s+$/g, '');
-    },
-    startsWith : function(a,b){
+    }
+    var startsWith = function(a,b){
         if(a == null || b == null) return false;
         if(typeof a !== 'string'){
             a = a.toString();
@@ -14,8 +16,8 @@ groundjs.StringUtil = {
             b = b.toString();
         }
         return a.indexOf(b) == 0;
-    },
-    endsWith: function(a,b){
+    }
+    var endsWith = function(a,b){
         if(a == null || b == null) return false;
         if(typeof a !== 'string'){
             a = a.toString();
@@ -24,7 +26,7 @@ groundjs.StringUtil = {
             b = b.toString();
         }
         return a.lastIndexOf(b) + b.length == a.length;
-    },
+    }
 
     /**
      * Pads a string with the specified character up to the specitied length on left or right
@@ -34,7 +36,7 @@ groundjs.StringUtil = {
      * @side 'left' to pad on the left (default), 'right' to pad on the right
      * @return padded string
      */
-    pad: function(s, pad, max, side){
+    var pad = function(s, pad, max, side){
         if(side == null){
             side = 'left';
         } 
@@ -73,8 +75,44 @@ groundjs.StringUtil = {
         }
         return result;
     }
-
-}
+    var insert = function(s,index,stringToInsert){
+        if(typeof s === g.Type.UNDEFINED || s == null){
+            return s;
+        } else if(typeof s !== g.Type.STRING){
+            s = s.toString();
+        }
+        
+        if(typeof index !== g.Type.NUMBER){
+            throw 'index must be a number';
+        }
+        
+        if(index < 0 || index > s.length){
+            throw 'index must be between 0 and ' + s.length;
+        }
+        
+        if(typeof stringToInsert === g.Type.UNDEFINED || stringToInsert == null){
+            return s;
+        }
+        
+        if(index === 0){
+            return stringToInsert + s;
+        } else if(index === s.length){
+            return s + stringToInsert;
+        } else {
+            return s.substring(0,index) + stringToInsert + s.substring(index, s.length);
+        }
+        
+    }
+    
+    return {
+        trim: trim,
+        startsWith: startsWith,
+        endsWith: endsWith,
+        pad: pad,
+        insert: insert
+    }
+    
+}();
 
 groundjs.ArrayUtil = {
     /**
@@ -85,8 +123,8 @@ groundjs.ArrayUtil = {
         while (low <= high) {
             i = Math.floor((low + high) / div);
             comparison = comparator(this[i], find);
-            if (comparison < 0) { low = i + 1; continue; };
-            if (comparison > 0) { high = i - 1; continue; };
+            if (comparison < 0) {low = i + 1;continue;};
+            if (comparison > 0) {high = i - 1;continue;};
             return i;
         }
         return null;

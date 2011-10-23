@@ -18,9 +18,6 @@ groundjs.Type = {
         if(typeof obj === UNDEFINED || obj == null){
             return false;
         }
-        
-        return typeof obj.length !== UNDEFINED;
-        
+        return typeof obj.length !== UNDEFINED;        
     }
-    
 }

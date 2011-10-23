@@ -47,7 +47,7 @@ groundjs.ajax = function(opts){
             throw 'Null URL';
         }
         var url = opts.url;
-        url = url.trim();
+        url = g.StringUtil.trim(url);
         if(url.length == 0){
             throw 'Empty URL';
         }
