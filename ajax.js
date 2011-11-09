@@ -1,5 +1,7 @@
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
 if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs.Ground';
+if(typeof groundjs.StringUtil === 'undefined') throw 'Requires groundjs.StringUtil';
+if(typeof groundjs.URL === 'undefined') throw 'Requires groundjs.URL';
 
 groundjs.HTTP = {
     method : {
@@ -42,7 +44,6 @@ groundjs.ajax = function(opts){
         DONE: 4
         }
 
-
         if(!opts.url){
             throw 'Null URL';
         }
@@ -51,7 +52,7 @@ groundjs.ajax = function(opts){
         if(url.length == 0){
             throw 'Empty URL';
         }
-        if(url.indexOf('://') != 0){
+        if(url.indexOf('://') == -1){//TODO: this may be in the params
             url = 'http://' + url;
         }
         if(url.indexOf('http://') != 0 && url.indexOf('https://') != 0){

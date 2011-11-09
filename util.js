@@ -104,12 +104,40 @@ groundjs.StringUtil = function(){
         
     }
     
+    var first = function(s){
+        if(typeof s == g.Type.UNDEFINED || s == null){
+            return s;
+        }
+        if(typeof s != 'string'){
+            s = s.toString();
+        }
+        if(s.length() == 0){
+            return s;
+        }
+        return s.charAt(0);
+    }
+    
+    var last = function(s){
+        if(typeof s == g.Type.UNDEFINED || s == null){
+            return s;
+        }
+        if(typeof s != 'string'){
+            s = s.toString();
+        }
+        if(s.length() == 0){
+            return s;
+        }
+        return s.charAt(s.length() - 1);
+    }
+    
     return {
-        trim: trim,
-        startsWith: startsWith,
         endsWith: endsWith,
+        first: first,
+        insert: insert,
+        last: last,
         pad: pad,
-        insert: insert
+        startsWith: startsWith,
+        trim: trim
     }
     
 }();
