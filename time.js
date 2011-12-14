@@ -70,5 +70,34 @@ groundjs.TimeUtil = {
             b.setFullYear(b.getFullYear() - v);
             return a.getTime() - b.getTime();
         } else return null;
+    },
+    
+    getTimePoint: function(t){
+    	
+        if(t == 'now'){
+            return new Date().getTime()
+        } else if(t.indexOf('minute') > -1
+            || t.indexOf('hour') > -1
+            || t.indexOf('day') > -1
+            || t.indexOf('week') > -1
+            || t.indexOf('month') > -1
+            || t.indexOf('year') > -1)
+        {
+            var span = groundjs.TimeUtil.parseTimeSpan(t);
+            if(span) return new Date().getTime() - span;
+            
+            try{
+                return Date.parse(t)
+            }catch(e){
+                error('Date format must be: 10 Jan 2011 00:00:00')
+            }
+            
+        } else {
+            try{
+                return Date.parse(t)
+            }catch(e){
+                error('Date format must be: 10 Jan 2011 00:00:00')
+            }
+        }
     }
 }

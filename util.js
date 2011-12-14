@@ -130,8 +130,33 @@ groundjs.StringUtil = function(){
         return s.charAt(s.length() - 1);
     }
     
+    var eval = function(s){
+        if(!s){
+            return s;
+        }
+        
+        //while(true){
+            
+            var start = s.indexOf('{');
+            //if(start == -1) break;
+
+            var end = s.indexOf('}',start);
+            //if(end == -1) break;
+
+            var exp = s.substring(start + 1, end);
+            
+            try{
+                eval('var v = ' + exp);
+            } catch(e){console.log(e)}
+        //}
+        
+        return s;
+        
+    }
+    
     return {
         endsWith: endsWith,
+        eval: eval,
         first: first,
         insert: insert,
         last: last,

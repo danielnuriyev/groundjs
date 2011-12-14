@@ -3,7 +3,6 @@ if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs.Ground';
 
 groundjs.Cookie = {
     get: function (sKey) {
-        console.log(document.cookie);
         if (!sKey || !this.has(sKey)) { return null; }
         return unescape(document.cookie.replace(new RegExp("(?:^|.*;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"), "$1"));
     },

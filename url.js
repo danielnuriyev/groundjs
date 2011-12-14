@@ -5,7 +5,7 @@ if(typeof groundjs.StringUtil === 'undefined') throw 'Requires groundjs.StringUt
 groundjs.URL = function(){ 
     var g = groundjs;
     var parse = function(url){
-		var regex = /^([^:]*:\/\/)?([^:]*:[^@]*@)?([^\/:\?]*\.[^\/:\?]*)?(:[^\/]*)?(\/[^?#]*)?(\?[^#]*)?(#.*)?$/i;
+		var regex = /^([^:]*:\/\/)?([^:]*:[^@]*@)?([^\/:\?]*\.?[^\/:\?]*)?(:[^\/]*)?(\/[^?#]*)?(\?[^#]*)?(#.*)?$/i;
 		//var url = uri.match(/^([^:]*:\/\/)?([^:]*:[^@]*@)?([^\/:]*\.[^\/:]*)?(:[^\/]*)?(\/[^?#]*)?(\?[^#]*)?(#.*)?$/i);
 		url = url.match(regex);
 		delete url.input;
@@ -21,7 +21,7 @@ groundjs.URL = function(){
 		url.query = url.search;
 		url.fragment = (url[7])?url[7].split('#')[1]:undefined;
 		url.hash = url.fragment;
-		url.href = String.empty
+		url.href = ''
 			+ url.protocol + '://'
 			+ ((url.user)?url.user+':'+url.password+'@':'')
 			+ url.host
@@ -32,6 +32,16 @@ groundjs.URL = function(){
                 
                 return url;    
                    
+    }
+    var format = function(url){
+    	return ''
+			+ url.protocol + '://'
+			+ ((url.user)?url.user+':'+url.password+'@':'')
+			+ url.host
+			+ ((url.port != 80)?':'+url.port:'')
+			+ url.path
+			+ ((url.search)?'?'+url.search:'')
+			+ ((url.fragment)?'#'+url.fragment:'');
     }
     var isLocal = function(url){
         var re = /^(?:about|app|app\-storage|.+\-extension|file|widget):$/;
@@ -51,6 +61,7 @@ groundjs.URL = function(){
         }
         return s;
     }
+    //TODO: deprecate and use append
     var appendParameters = function(url, parameters){
         if(parameters == null){
             return url;
@@ -73,12 +84,46 @@ groundjs.URL = function(){
         }
         return url;
     }
-    
+    var append = function(url, tail){
+        if(tail == null){
+            return url;
+        }
+        url = g.StringUtil.trim(url);
+        tail = g.StringUtil.trim(tail);
+        if(tail.length == 0){
+            return g.URL.format();
+        }
+        
+        _url = g.URL.parse(url);
+        
+        if(_url.fragment){
+        	return url;
+        } else if(_url.search){
+       		_url.search += '&' + tail;
+       		return g.URL.format(_url);
+        } else if(_url.path){        	
+        	var i = tail.indexOf('/');
+        	if(i > -1){
+        		var tmp = g.StringUtil.endsWith(_url.path, '/') ? _url.path.substring(1) : _url.path;
+           		tmp += g.StringUtil.startsWith(tail, '/') ? tail : '/' + tail; 
+           		_url.path = tmp;
+        	} else {
+        		var tmp = g.StringUtil.endsWith(_url.path, '?') ? _url.path.substring(1) : _url.path;
+           		tmp += g.StringUtil.startsWith(tail, '?') ? tail : '?' + tail; 
+           		_url.path = tmp;
+        	}
+        	return g.URL.format(_url);
+        } else {
+        	return url + '?' + tail;
+        }
+    }
     return {
         parse:parse,
+        format:format,
         isLocal:isLocal,
         toParameters:toParameters,
-        appendParameters:appendParameters
+        appendParameters:appendParameters,
+        append:append
     }
     
 }();
