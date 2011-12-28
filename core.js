@@ -1,3 +1,5 @@
+// groundjs/core.js --------------------------------------------------
+
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
 
 groundjs.Ground = {}

@@ -1,6 +1,7 @@
+// groundjs/url.js ---------------------------------------------------
+
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
-if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs.Ground';
-if(typeof groundjs.StringUtil === 'undefined') throw 'Requires groundjs.StringUtil';
+if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs/core.js';
 
 groundjs.URL = function(){ 
     var g = groundjs;

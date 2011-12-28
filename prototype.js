@@ -1,3 +1,4 @@
+// groundjs/prototype.js --------------------------------------
 // String -----------------------------------------------------
 
 if(typeof String.empty === 'undefined'){String.empty = '';}

@@ -816,3 +816,267 @@ groundjs.Color = {
     YellowGreen: '#9ACD32'
     
 }
+// groundjs/cookie.js ------------------------------------------------
+
+if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
+if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs.Ground';
+
+groundjs.Cookie = {
+    get: function (sKey) {
+        if (!sKey || !this.has(sKey)) { return null; }
+        return unescape(document.cookie.replace(new RegExp("(?:^|.*;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"), "$1"));
+    },
+    /**
+      * docCookies.setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure)
+      *
+      * @argument sKey (String): the name of the cookie;
+      * @argument sValue (String): the value of the cookie;
+      * @optional argument vEnd (Number, String, Date Object or null): the max-age in seconds (e.g., 31536e3 for a year) or the
+      *  expires date in GMTString format or in Date Object format; if not specified it will expire at the end of session; 
+      * @optional argument sPath (String or null): e.g., "/", "/mydir"; if not specified, defaults to the current path of the current document location;
+      * @optional argument sDomain (String or null): e.g., "example.com", ".example.com" (includes all subdomains) or "subdomain.example.com"; if not
+      * specified, defaults to the host portion of the current document location;
+      * @optional argument bSecure (Boolean or null): cookie will be transmitted only over secure protocol as https;
+      * @return undefined;
+      **/
+    set: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+        if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/.test(sKey)) { return; }
+        var sExpires = "";
+        if (vEnd) {
+          switch (typeof vEnd) {
+            case "number": sExpires = "; max-age=" + vEnd; break;
+            case "string": sExpires = "; expires=" + vEnd; break;
+            case "object": if (vEnd.hasOwnProperty("toGMTString")) { sExpires = "; expires=" + vEnd.toGMTString(); } break;
+          }
+        }
+        document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
+    },
+    remove: function (sKey) {
+        if (!sKey || !this.has(sKey)) { return; }
+        var oExpDate = new Date();
+        oExpDate.setDate(oExpDate.getDate() - 1);
+        document.cookie = escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/";
+    },
+    has: function (sKey) { return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie); }
+
+};
+
+// groundjs/ajax.js --------------------------------------------------
+
+if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
+if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs/core.js';
+if(typeof groundjs.URL === 'undefined') throw 'Requires groundjs/url.js';
+
+groundjs.HTTP = {
+    method : {
+        DELETE: 'DELETE',
+        HEAD: 'HEAD',
+        GET: 'GET',
+        OPTIONS: 'OPTIONS',
+        PATCH: 'PATCH',
+        POST: 'POST',
+        PUT: 'PUT',
+        TRACE: 'TRACE'
+        }
+}
+
+/**
+     * Options:
+     *  url(mandatory)
+     *  method(optional): GET(default), POST etc.
+     *  data(optional): object or string in the format a=b&c=d
+     *  async(optional): true(default) or false.
+     *  username(optional)
+     *  password(optional)
+     *  onSuccess(optional): function
+     *  onError(optional): function
+     *  datatype(optional): 'json', 'jsonp', 'text'. default: 'json'
+     */
+groundjs.ajax = function(opts){
+
+    var g = groundjs;
+    /*
+     * TODO:
+     * encode params?
+     * jquery props
+     */
+    
+    var readyState = {
+        UNSENT:0,
+        OPENED: 1,
+        HEADERS_RECEIVED: 2,
+        LOADING: 3,
+        DONE: 4
+        }
+
+        if(!opts.url){
+            throw 'Null URL';
+        }
+        var url = opts.url;
+        url = g.StringUtil.trim(url);
+        if(url.length == 0){
+            throw 'Empty URL';
+        }
+        if(url.indexOf('://') == -1){//TODO: this may be in the params
+            url = 'http://' + url;
+        }
+        if(url.indexOf('http://') != 0 && url.indexOf('https://') != 0){
+            return 'Unsupported protocol';
+        }
+        
+        var r = window.ActiveXObject ? 
+            (g.URL.isLocal(url) ?  new window.ActiveXObject( "Microsoft.XMLHTTP" ) : new window.XMLHttpRequest()) : 
+            new window.XMLHttpRequest();
+                
+        var method = opts.method;
+        if(!method){
+            method = g.HTTP.method.GET;
+        }
+        
+        if(method == g.HTTP.method.GET){
+            if(opts.data){
+                url = g.URL.appendParameters(url,opts.data);
+            }
+        }
+        
+        if(!opts.dataType){
+        	opts.dataType = 'json';
+        }
+        
+        if(opts.dataType == 'jsonp' && method != g.HTTP.method.GET){
+        	throw 'jsonp works with GET only';
+        }
+        
+        if(opts.dataType == 'jsonp'){
+        	
+        	var jsonpFn = 'jsonp' + new Date().getTime();
+        	
+        	window[jsonpFn] = function(response) {
+				if (opts.onSuccess) opts.onSuccess(response);
+			};
+        	
+        	url = g.URL.append(url,'jsonp='+jsonpFn);
+        	
+        	var head = document.getElementsByTagName && document.getElementsByTagName('head') ? document.getElementsByTagName('head')[0] : document.documentElement;
+        	var script = document.createElement('script');
+			script.async = 'async';
+			script.src = url;
+			script.onload = script.onreadystatechange = function() {
+				if (!script.readyState || /loaded|complete/.test(script.readyState)) {
+					head.removeChild(script);
+					delete window[jsonpFn];
+				}
+			};
+			head.appendChild(script);
+        } else {
+	        var async = typeof opts.async === g.Type.UNDEFINED || options.async == null ? true : opts.async;
+	        
+	        if(opts.username){
+	            r.open(method, url, async, opts.username, opts.password);
+	        } else {
+	            r.open(method, url, async);
+	        }
+	        r.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+	        r.onreadystatechange = function(){
+	            if (this.readyState < readyState.DONE) return;
+	            if (this.status >= 200 && this.status < 300) {
+	                if(opts.onSuccess){
+	                	var response = this.responseText;
+	                	if(opts.dataType == 'json' && response){
+	                		response = g.StringUtil.trim(response);
+	                		if(response){
+	                			response = eval('(' + response + ')');
+		                    }
+	                	}
+	                	opts.onSuccess(response);
+	                } 
+	            } else {
+	                if(opts.onError){
+	                    var response = this.responseText;
+	                    if(opts.dataType == 'json' && response){
+	                        response = g.StringUtil.trim(response);
+	                        if(response){
+	                            response = eval('(' + response + ')');
+	                        }
+	                    }
+	                    opts.onError(response);
+	                } 
+	            }
+	        }
+	
+	        if(method == g.HTTP.method.POST && opts.data){
+	            r.send(g.URL.toParameters(opts.data));
+	        } else {        
+	            r.send();
+	        }
+        
+        }
+    
+}
+
+// groundjs/numUtil.js ----------------------------------------------
+
+if(typeof groundjs == 'undefined') throw 'Requires groundjs/util.js';
+if(typeof groundjs.Ground == 'undefined') throw 'Requires groundjs/core.js';
+
+groundjs.progress = function(){
+
+	var timers = {}
+	
+	var start = function(divId, max, value, interval, cls, styles, factor){
+    	
+		//console.log('max: ' + max + ", val: " + value + ", " + factor )
+		
+		if(!factor) factor = 2;
+		
+    	var next = true;
+    	
+    	var div = document.getElementById('progress_' + divId);
+    	if(value > max - max/factor){
+    		max *= factor;
+    		div.setAttribute('max', '' + max);
+    		value *= factor; 
+    		factor *= 2;
+    	}
+    	
+    	if(value >= max){
+    		value = max - 1;
+    		next = false;
+    	}
+    	
+    	if(div){
+    		div.setAttribute('value', '' + value);
+    	} else {
+    		div = document.getElementById(divId);
+        	div.innerHTML = '<progress id="progress_' + divId + '" value="' + value + '" max="' + max + '"' +
+        		(cls ? ' class="' + cls + '" ' : '') +
+        		(styles ? ' style="' + styles + '" ' : '') + 
+        		'></progress>';
+    	}
+    	
+    	if(next){
+    		timers[divId] = setTimeout(function(){
+	    		groundjs.progress.start(divId, max, ++value, interval, cls, styles, factor);
+	    	}, interval);
+    	}
+    	
+    }
+	
+	var hide = function(divId){
+		
+		clearTimeout(timers[divId]);
+		delete timers[divId];
+		
+		var div = document.getElementById('progress_' + divId);
+    	if(div){
+    		div = document.getElementById(divId);
+    		div.innerHTML = '';
+    	}   		
+    }
+	
+	return {
+		start: start,
+		hide: hide
+	}
+
+}();

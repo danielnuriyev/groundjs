@@ -1,7 +1,8 @@
+// groundjs/ajax.js --------------------------------------------------
+
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
-if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs.Ground';
-if(typeof groundjs.StringUtil === 'undefined') throw 'Requires groundjs.StringUtil';
-if(typeof groundjs.URL === 'undefined') throw 'Requires groundjs.URL';
+if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs/core.js';
+if(typeof groundjs.URL === 'undefined') throw 'Requires groundjs/url.js';
 
 groundjs.HTTP = {
     method : {

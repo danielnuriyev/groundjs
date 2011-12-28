@@ -1,5 +1,7 @@
+// groundjs/color.js -------------------------------------------------
+
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
-if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs.Ground';
+if(typeof groundjs.Ground === 'undefined') throw 'Requires groundks/core.js';
 
 groundjs.Color = {
     

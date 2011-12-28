@@ -1,3 +1,5 @@
+// groundjs/util.js --------
+
 if(!groundjs) groundjs = {};
 
 groundjs.StringUtil = function(){
