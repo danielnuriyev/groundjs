@@ -6,6 +6,9 @@ groundjs.StringUtil = function(){
 
     var g = groundjs;
 
+    var isEmpty = function(s){
+    	return typeof s == g.Type.UNDEFINED || s == null || g.StringUtil.trim(s).length == 0;
+    }
     var trim = function(s){
         return s.replace(/^\s+|\s+$/g, '');
     }
@@ -161,6 +164,7 @@ groundjs.StringUtil = function(){
         eval: eval,
         first: first,
         insert: insert,
+        isEmpty: isEmpty,
         last: last,
         pad: pad,
         startsWith: startsWith,
@@ -169,11 +173,25 @@ groundjs.StringUtil = function(){
     
 }();
 
-groundjs.ArrayUtil = {
+groundjs.ArrayUtil = function(){
+
+	var g = groundjs;
+	
+	var isEmpty = function(a){
+		if(typeof a == g.Type.UNDEFINED || a == null || a.length == 0){
+			return true;
+		}
+		for(var i = 0; i < a.length; i++){
+			var e = a[i];
+			if(typeof a != g.Type.UNDEFINED && a != null) return false;
+		}
+		return true;
+	}
+		
     /**
      * The array must be sorted
      */
-    binarySearch: function(find, comparator) {
+    var binarySearch = function(find, comparator) {
         var low = 0, high = this.length - 1, i, comparison, div = 2;
         while (low <= high) {
             i = Math.floor((low + high) / div);
@@ -184,4 +202,8 @@ groundjs.ArrayUtil = {
         }
         return null;
     }
-}
+	return{
+		isEmpty: isEmpty,
+		binarySearch: binarySearch
+	}
+}();
