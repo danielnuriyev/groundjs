@@ -36,5 +36,8 @@ groundjs.NumUtil = {
         } else {
             throw 'Not an array';
         }
+    },
+    isNumber :function(obj){
+    	return !isNaN(parseFloat(obj)) && isFinite(obj)
     }
 };

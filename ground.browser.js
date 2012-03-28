@@ -167,6 +167,9 @@ groundjs.StringUtil = function(){
 
     var g = groundjs;
 
+    var isEmpty = function(s){
+    	return typeof s == g.Type.UNDEFINED || s == null || g.StringUtil.trim(s).length == 0;
+    }
     var trim = function(s){
         return s.replace(/^\s+|\s+$/g, '');
     }
@@ -322,6 +325,7 @@ groundjs.StringUtil = function(){
         eval: eval,
         first: first,
         insert: insert,
+        isEmpty: isEmpty,
         last: last,
         pad: pad,
         startsWith: startsWith,
@@ -330,11 +334,25 @@ groundjs.StringUtil = function(){
     
 }();
 
-groundjs.ArrayUtil = {
+groundjs.ArrayUtil = function(){
+
+	var g = groundjs;
+	
+	var isEmpty = function(a){
+		if(typeof a == g.Type.UNDEFINED || a == null || a.length == 0){
+			return true;
+		}
+		for(var i = 0; i < a.length; i++){
+			var e = a[i];
+			if(typeof a != g.Type.UNDEFINED && a != null) return false;
+		}
+		return true;
+	}
+		
     /**
      * The array must be sorted
      */
-    binarySearch: function(find, comparator) {
+    var binarySearch = function(find, comparator) {
         var low = 0, high = this.length - 1, i, comparison, div = 2;
         while (low <= high) {
             i = Math.floor((low + high) / div);
@@ -345,7 +363,11 @@ groundjs.ArrayUtil = {
         }
         return null;
     }
-}
+	return{
+		isEmpty: isEmpty,
+		binarySearch: binarySearch
+	}
+}();
 
 // groundjs/core.js --------------------------------------------------
 
@@ -411,6 +433,9 @@ groundjs.NumUtil = {
         } else {
             throw 'Not an array';
         }
+    },
+    isNumber :function(obj){
+    	return !isNaN(parseFloat(obj)) && isFinite(obj)
     }
 };
 // groundjs/time.js --------------------------------------------------
@@ -528,30 +553,30 @@ groundjs.URL = function(){
     var parse = function(url){
 		var regex = /^([^:]*:\/\/)?([^:]*:[^@]*@)?([^\/:\?]*\.?[^\/:\?]*)?(:[^\/]*)?(\/[^?#]*)?(\?[^#]*)?(#.*)?$/i;
 		//var url = uri.match(/^([^:]*:\/\/)?([^:]*:[^@]*@)?([^\/:]*\.[^\/:]*)?(:[^\/]*)?(\/[^?#]*)?(\?[^#]*)?(#.*)?$/i);
-		url = url.match(regex);
-		delete url.input;
-		url.protocol = ((url[1])?url[1]:'http://').split('://')[0];
-		url.user = (url[2])?url[2].split(':')[0]:undefined;
-		url.password = (url[2])?url[2].split(':')[1].split('@')[0]:undefined;
-		url.host = (url[3])?url[3]:location.host;
-		url.hostname = url.host;
-		url.port = (url[4])?((isNaN(parseInt(url[4].split(':')[1])))?80:parseInt(url[4].split(':')[1])):80;
-		url.path = (url[5])?url[5]:'/';
-		url.pathname = url.path;
-		url.search = (url[6])?url[6].split('?')[1]:undefined;
-		url.query = url.search;
-		url.fragment = (url[7])?url[7].split('#')[1]:undefined;
-		url.hash = url.fragment;
-		url.href = ''
-			+ url.protocol + '://'
-			+ ((url.user)?url.user+':'+url.password+'@':'')
-			+ url.host
-			+ ((url.port != 80)?':'+url.port:'')
-			+ url.path
-			+ ((url.search)?'?'+url.search:'')
-			+ ((url.fragment)?'#'+url.fragment:'');
+		var obj = url.match(regex);
+		//delete url.input;
+		obj.protocol = ((url[1])?url[1]:'http://').split('://')[0];
+		obj.user = (url[2])?url[2].split(':')[0]:undefined;
+		obj.password = (url[2])?url[2].split(':')[1].split('@')[0]:undefined;
+		obj.host = (url[3])?url[3]:location.host;
+		obj.hostname = obj.host;
+		obj.port = (url[4])?((isNaN(parseInt(url[4].split(':')[1])))?80:parseInt(url[4].split(':')[1])):80;
+		obj.path = (url[5])?url[5]:'/';
+		obj.pathname = obj.path;
+		obj.search = url[6] ? url[6].split('?')[1] : undefined;
+		obj.query = obj.search;
+		obj.fragment = (url[7])?url[7].split('#')[1]:undefined;
+		obj.hash = obj.fragment;
+		obj.href = ''
+			+ obj.protocol + '://'
+			+ ((obj.user)?obj.user+':'+obj.password+'@':'')
+			+ obj.host
+			+ ((obj.port != 80)?':'+obj.port:'')
+			+ obj.path
+			+ ((obj.search)?'?'+obj.search:'')
+			+ ((obj.fragment)?'#'+obj.fragment:'');
                 
-                return url;    
+       return obj;    
                    
     }
     var format = function(url){
@@ -569,6 +594,9 @@ groundjs.URL = function(){
         url = g.URL.parse(url);
         return re.test(url.protocol);
     }
+    /**
+     * converts a map to & separated string
+     */
     var toParameters = function(obj){
         
         if(obj == null) return '';
@@ -582,7 +610,9 @@ groundjs.URL = function(){
         }
         return s;
     }
-    //TODO: deprecate and use append
+    /**
+     * @Deprecated use append
+     */
     var appendParameters = function(url, parameters){
         if(parameters == null){
             return url;
@@ -612,7 +642,7 @@ groundjs.URL = function(){
         url = g.StringUtil.trim(url);
         tail = g.StringUtil.trim(tail);
         if(tail.length == 0){
-            return g.URL.format();
+            return g.URL.format(url);
         }
         
         _url = g.URL.parse(url);
@@ -620,21 +650,32 @@ groundjs.URL = function(){
         if(_url.fragment){
         	return url;
         } else if(_url.search){
+        	//TODO:
+        	/*
+        	if(tail.indexOf('/') == 0){
+        	} else if(tail.indexOf('?') == 0){
+        	} else if(tail.indexOf('#') == 0){
+        	} else if(tail.indexOf('=') > -1){
+        	} else {
+        	}
+        	*/
        		_url.search += '&' + tail;
        		return g.URL.format(_url);
         } else if(_url.path){        	
         	var i = tail.indexOf('/');
         	if(i > -1){
-        		var tmp = g.StringUtil.endsWith(_url.path, '/') ? _url.path.substring(1) : _url.path;
+        		var tmp = g.StringUtil.endsWith(_url.path, '/') ? _url.path.substring(0, _url.path.length - 1) : _url.path;
            		tmp += g.StringUtil.startsWith(tail, '/') ? tail : '/' + tail; 
            		_url.path = tmp;
         	} else {
-        		var tmp = g.StringUtil.endsWith(_url.path, '?') ? _url.path.substring(1) : _url.path;
+        		//TODO: what does tail start with
+        		var tmp = g.StringUtil.endsWith(_url.path, '?') ? _url.path.substring(0, _url.path.length - 1) : _url.path;
            		tmp += g.StringUtil.startsWith(tail, '?') ? tail : '?' + tail; 
            		_url.path = tmp;
         	}
         	return g.URL.format(_url);
         } else {
+        	//TODO: if starts with /
         	return url + '?' + tail;
         }
     }
@@ -985,7 +1026,12 @@ groundjs.ajax = function(opts){
 	                	if(opts.dataType == 'json' && response){
 	                		response = g.StringUtil.trim(response);
 	                		if(response){
-	                			response = eval('(' + response + ')');
+	                			try{
+	                				response = eval(response);
+	                			}
+	                			catch(e){
+	                				response = eval('(' + response + ')');
+	                			}
 		                    }
 	                	}
 	                	opts.onSuccess(response);
