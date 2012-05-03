@@ -126,7 +126,9 @@ groundjs.ajax = function(opts){
 	                				response = eval(response);
 	                			}
 	                			catch(e){
-	                				response = eval('(' + response + ')');
+	                				try{
+	                					response = eval('(' + response + ')');
+	                				}catch(e2){}
 	                			}
 		                    }
 	                	}
