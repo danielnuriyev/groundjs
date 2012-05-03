@@ -551,21 +551,21 @@ if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs/core.js';
 groundjs.URL = function(){ 
     var g = groundjs;
     var parse = function(url){
-		var regex = /^([^:]*:\/\/)?([^:]*:[^@]*@)?([^\/:\?]*\.?[^\/:\?]*)?(:[^\/]*)?(\/[^?#]*)?(\?[^#]*)?(#.*)?$/i;
-		//var url = uri.match(/^([^:]*:\/\/)?([^:]*:[^@]*@)?([^\/:]*\.[^\/:]*)?(:[^\/]*)?(\/[^?#]*)?(\?[^#]*)?(#.*)?$/i);
-		var obj = url.match(regex);
-		//delete url.input;
-		obj.protocol = ((url[1])?url[1]:'http://').split('://')[0];
-		obj.user = (url[2])?url[2].split(':')[0]:undefined;
-		obj.password = (url[2])?url[2].split(':')[1].split('@')[0]:undefined;
-		obj.host = (url[3])?url[3]:location.host;
+		var re = /^([^:]*:\/\/)?([^:]*:[^@]*@)?([^\/:\?]*\.?[^\/:\?]*)?(:[^\/]*)?(\/[^?#]*)?(\?[^#]*)?(#.*)?$/i;
+		var m = url.match(re);
+		
+		var obj = {};
+		obj.protocol = ((m[1])?m[1]:'http://').split('://')[0];
+		obj.user = (m[2])?m[2].split(':')[0]:undefined;
+		obj.password = (m[2])?m[2].split(':')[1].split('@')[0]:undefined;
+		obj.host = (m[3])?m[3]:location.host;
 		obj.hostname = obj.host;
-		obj.port = (url[4])?((isNaN(parseInt(url[4].split(':')[1])))?80:parseInt(url[4].split(':')[1])):80;
-		obj.path = (url[5])?url[5]:'/';
+		obj.port = (m[4])?((isNaN(parseInt(m[4].split(':')[1])))?80:parseInt(m[4].split(':')[1])):80;
+		obj.path = (m[5])?m[5]:'/';
 		obj.pathname = obj.path;
-		obj.search = url[6] ? url[6].split('?')[1] : undefined;
+		obj.search = m[6] ? m[6].split('?')[1] : undefined;
 		obj.query = obj.search;
-		obj.fragment = (url[7])?url[7].split('#')[1]:undefined;
+		obj.fragment = (m[7])?m[7].split('#')[1]:undefined;
 		obj.hash = obj.fragment;
 		obj.href = ''
 			+ obj.protocol + '://'
