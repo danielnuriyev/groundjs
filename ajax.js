@@ -122,13 +122,15 @@ groundjs.ajax = function(opts){
 	                	if(opts.dataType == 'json' && response){
 	                		response = g.StringUtil.trim(response);
 	                		if(response){
-	                			try{
-	                				response = eval(response);
-	                			}
-	                			catch(e){
-	                				try{
-	                					response = eval('(' + response + ')');
-	                				}catch(e2){}
+	                			if(!new RegExp('[0-9]').test(response)){
+		                			try{
+		                				response = eval(response);
+		                			}
+		                			catch(e){
+		                				try{
+		                					response = eval('(' + response + ')');
+		                				}catch(e2){}
+		                			}
 	                			}
 		                    }
 	                	}
