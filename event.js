@@ -5,7 +5,7 @@ groundjs.event = function(){
 	
 	var listeners = {};
 		
-	var listen = function(eventType, func){
+	var subscribe = function(eventType, func){
 		
 		if(typeof func != g.Type.FUNCTION) throw "event listener must be a function";
 		
@@ -18,6 +18,28 @@ groundjs.event = function(){
 		}
 		
 		listeners[eventType].push(func);
+	}
+	
+	var unsubscribe = function(eventType, func){
+		
+		if(listeners[eventType]){
+		
+			if(func){
+			
+				for(var i = 0; i < listeners[eventType].length; i++){
+					if(listeners[eventType][i] === func){
+						listeners[eventType].splice(i,1);
+						break;
+					}
+				}
+				
+				if(listeners[eventType].length == 0) delete listeners[eventType];
+			
+			} else {
+				delete listeners[eventType];
+			}
+		
+		}
 	}
 	
 	var fire = function(eventType, data){
