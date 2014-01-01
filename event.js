@@ -51,7 +51,8 @@ groundjs.event = function(){
 	}
 	
 	return {
-		listen:listen,
+		subscribe:subscribe,
+		unsubscribe:unsubscribe,
 		fire:fire
 		}
 	
