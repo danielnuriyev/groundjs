@@ -158,7 +158,6 @@ Array.prototype.binarySearch = function(find, comparator) {
 };
 
 groundjs = {};
-
 // groundjs/util.js --------
 
 if(!groundjs) groundjs = {};
@@ -368,7 +367,6 @@ groundjs.ArrayUtil = function(){
 		binarySearch: binarySearch
 	}
 }();
-
 // groundjs/core.js --------------------------------------------------
 
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
@@ -394,7 +392,6 @@ groundjs.Type = {
         return typeof obj.length !== UNDEFINED;        
     }
 }
-
 // groundjs/numUtil.js -----------------------------------------------
 
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
@@ -596,7 +593,8 @@ groundjs.event = function(){
 	}
 	
 	return {
-		listen:listen,
+		subscribe:subscribe,
+		unsubscribe:unsubscribe,
 		fire:fire
 		}
 	
@@ -747,7 +745,6 @@ groundjs.URL = function(){
     }
     
 }();
-
 // groundjs/color.js -------------------------------------------------
 
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
@@ -959,7 +956,6 @@ groundjs.Cookie = {
     has: function (sKey) { return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie); }
 
 };
-
 // groundjs/ajax.js --------------------------------------------------
 
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
@@ -1121,7 +1117,6 @@ groundjs.ajax = function(opts){
         }
     
 }
-
 // groundjs/numUtil.js ----------------------------------------------
 
 if(typeof groundjs == 'undefined') throw 'Requires groundjs/util.js';
