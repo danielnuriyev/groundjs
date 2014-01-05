@@ -1012,6 +1012,11 @@ groundjs.ajax = function(opts){
         if(url.length == 0){
             throw 'Empty URL';
         }
+        
+        if(url.charAt(0) == '/'){
+        	url = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + url;
+        }
+        
         if(url.indexOf('://') == -1){//TODO: this may be in the params
             url = 'http://' + url;
         }
