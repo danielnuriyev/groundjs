@@ -986,6 +986,7 @@ groundjs.HTTP = {
      *  onSuccess(optional): function
      *  onError(optional): function
      *  datatype(optional): 'json', 'jsonp', 'text'. default: 'json'
+     *  headers(optional): map of headers to add
      */
 groundjs.ajax = function(opts){
 
@@ -1052,7 +1053,9 @@ groundjs.ajax = function(opts){
         	var jsonpFn = 'jsonp' + new Date().getTime();
         	
         	window[jsonpFn] = function(response) {
-				if (opts.onSuccess) opts.onSuccess(response);
+				if (opts.onSuccess) {
+					opts.onSuccess({data:response});
+				}
 			};
         	
         	url = g.URL.append(url,'jsonp='+jsonpFn);
@@ -1077,8 +1080,18 @@ groundjs.ajax = function(opts){
 	            r.open(method, url, async);
 	        }
 	        r.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+	        if(opts.headers) {
+	        	for (var header in opts.headers) {
+  					if (opts.headers.hasOwnProperty(header)) {
+    					r.setRequestHeader(header, opts.headers[header]);
+  					}
+				}
+	        }
 	        r.onreadystatechange = function(){
 	            if (this.readyState < readyState.DONE) return;
+	            
+	            //console.log(this.getAllResponseHeaders());
+	            
 	            if (this.status >= 200 && this.status < 300) {
 	                if(opts.onSuccess){
 	                	var response = this.responseText;
@@ -1097,7 +1110,12 @@ groundjs.ajax = function(opts){
 	                			}
 		                    }
 	                	}
-	                	opts.onSuccess(response);
+	                	opts.onSuccess(
+	                		{
+	                			data:response, 
+	                			headers:this.getAllResponseHeaders()
+	                		}
+	                	);
 	                } 
 	            } else {
 	                if(opts.onError){
