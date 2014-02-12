@@ -391,7 +391,30 @@ groundjs.Type = {
         }
         return typeof obj.length !== UNDEFINED;        
     }
+    
 }
+
+groundjs.type = function(item) {
+      var getPrototype = function(item) {
+        return Object.prototype.toString.call(item).slice(8, -1);
+      };
+      var kind, Undefined;
+      if (item === null ) {
+        kind = 'null';
+      } else {
+        if ( item === Undefined ) {
+          kind = 'undefined';
+        } else {
+          var prototype = getPrototype(item);
+          if ( ( prototype === 'Number' ) && isNaN(item) ) {
+            kind = 'NaN';
+          } else {
+            kind = prototype;
+          }
+        }
+      }
+      return kind;
+    }
 // groundjs/numUtil.js -----------------------------------------------
 
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
