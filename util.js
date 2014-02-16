@@ -1,6 +1,6 @@
 // groundjs/util.js --------
 
-if(!groundjs) groundjs = {};
+if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs/core.js';
 
 groundjs.StringUtil = function(){
 
@@ -203,6 +203,7 @@ groundjs.ArrayUtil = function(){
         return null;
     }
 	return{
+		isArray: g.isArray,
 		isEmpty: isEmpty,
 		binarySearch: binarySearch
 	}

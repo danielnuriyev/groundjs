@@ -1,6 +1,6 @@
 // groundjs/core.js --------------------------------------------------
 
-if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
+if(!groundjs) groundjs = {};
 
 groundjs.Ground = {}
 
@@ -8,41 +8,59 @@ groundjs.Ground = {}
  * JavaScript types
  * Using groundjs.Type saves string creation
  */
-groundjs.Type = {
-    UNDEFINED: 'undefined',
-    BOOLEAN: 'boolean',
-    NUMBER: 'number',
-    STRING: 'string',
-    OBJECT: 'object',
-    FUNCTION: 'function',
-    
-    isArray: function(obj){
-        if(typeof obj === UNDEFINED || obj == null){
-            return false;
-        }
-        return typeof obj.length !== UNDEFINED;        
+groundjs.Type = function(){
+   
+    var UNDEFINED = 'undefined'
+	var BOOLEAN = 'boolean'
+	var NUMBER = 'number'
+	var STRING = 'string'
+	var FUNCTION = 'function'
+	var OBJECT = 'object'
+	var XML = 'xml'
+	    
+    var argsClass = '[object Arguments]',
+      arrayClass = '[object Array]',
+      boolClass = '[object Boolean]',
+      dateClass = '[object Date]',
+      funcClass = '[object Function]',
+      numberClass = '[object Number]',
+      objectClass = '[object Object]',
+      regexpClass = '[object RegExp]',
+      stringClass = '[object String]';
+   
+    var isArguments = function(value) {
+      return value && 
+      			typeof value == OBJECT && 
+      			typeof value.length == NUMBER &&
+        		toString.call(value) == argsClass || false
     }
     
-}
-
-groundjs.type = function(item) {
-      var getPrototype = function(item) {
-        return Object.prototype.toString.call(item).slice(8, -1);
-      };
-      var kind, Undefined;
-      if (item === null ) {
-        kind = 'null';
-      } else {
-        if ( item === Undefined ) {
-          kind = 'undefined';
-        } else {
-          var prototype = getPrototype(item);
-          if ( ( prototype === 'Number' ) && isNaN(item) ) {
-            kind = 'NaN';
-          } else {
-            kind = prototype;
-          }
-        }
-      }
-      return kind;
+    var isArray = function(value){
+        return value && 
+        		typeof value == OBJECT && 
+        		typeof value.length == NUMBER &&
+        		toString.call(value) == arrayClass || false;        
     }
+    
+    var isBoolean = function(value) {
+      return value === true || value === false ||
+        value && typeof value == OBJECT && toString.call(value) == boolClass || false;
+    }
+    
+    //TO BE CONTINUED
+    
+    return {
+	    UNDEFINED: UNDEFINED,
+	    BOOLEAN: BOOLEAN,
+	    NUMBER: NUMBER,
+	    STRING: STRING,
+	    FUNCTION: FUNCTION,
+	    OBJECT: OBJECT,
+	    XML: XML,
+	    
+	    isArguments: isArguments,
+	    isArray:     isArray,
+	    isBoolean:   isBoolean
+    }
+    
+}();
