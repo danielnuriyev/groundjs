@@ -47,6 +47,10 @@ groundjs.Type = function(){
         value && typeof value == OBJECT && toString.call(value) == boolClass || false;
     }
     
+    var isDate = function(value) {
+      return value && typeof value == OBJECT' && toString.call(value) == dateClass || false;
+    }
+    
     //TO BE CONTINUED
     
     return {
