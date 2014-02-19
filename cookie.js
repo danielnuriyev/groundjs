@@ -3,11 +3,15 @@
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
 if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs/core.js';
 
-groundjs.Cookie = {
-    get: function (sKey) {
+groundjs.Cookie = function(){
+
+	var g = groundjs
+
+    var get = function (sKey) {
         if (!sKey || !this.has(sKey)) { return null; }
         return unescape(document.cookie.replace(new RegExp("(?:^|.*;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"), "$1"));
-    },
+    }
+    
     /**
       * docCookies.setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure)
       *
@@ -21,24 +25,33 @@ groundjs.Cookie = {
       * @optional argument bSecure (Boolean or null): cookie will be transmitted only over secure protocol as https;
       * @return undefined;
       **/
-    set: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+    var set = function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
         if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/.test(sKey)) { return; }
         var sExpires = "";
         if (vEnd) {
           switch (typeof vEnd) {
-            case "number": sExpires = "; max-age=" + vEnd; break;
-            case "string": sExpires = "; expires=" + vEnd; break;
-            case "object": if (vEnd.hasOwnProperty("toGMTString")) { sExpires = "; expires=" + vEnd.toGMTString(); } break;
+            case g.Type.NUMBER: sExpires = "; max-age=" + vEnd; break;
+            case g.Type.STRING: sExpires = "; expires=" + vEnd; break;
+            case g.Type.OBJECT: if (vEnd.hasOwnProperty("toGMTString")) { sExpires = "; expires=" + vEnd.toGMTString(); } break;
           }
         }
         document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
-    },
-    remove: function (sKey) {
+    }
+    
+    var remove = function (sKey) {
         if (!sKey || !this.has(sKey)) { return; }
         var oExpDate = new Date();
         oExpDate.setDate(oExpDate.getDate() - 1);
         document.cookie = escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/";
-    },
-    has: function (sKey) { return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie); }
+    }
+    
+    var has = function (sKey) { return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie); }
+    
+    return {
+    	set :set,
+    	get :get,
+    	remove :remove,
+    	has :has
+    }
 
 };

@@ -3,11 +3,13 @@ if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs/core.js';
 
 groundjs.event = function(){
 	
-	var listeners = {};
+	var g = groundjs
+	
+	var listeners = {}
 		
 	var subscribe = function(eventType, func){
 		
-		if(typeof func != g.Type.FUNCTION) throw "event listener must be a function";
+		if(!g.Type.isFunction(func)) throw "event listener must be a function";
 		
 		if(!listeners[eventType]){
 			listeners[eventType] = new Array();

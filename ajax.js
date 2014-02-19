@@ -33,6 +33,7 @@ groundjs.HTTP = {
 groundjs.ajax = function(opts){
 
     var g = groundjs;
+
     /*
      * TODO:
      * encode params?
@@ -114,7 +115,7 @@ groundjs.ajax = function(opts){
 			};
 			head.appendChild(script);
         } else {
-	        var async = typeof opts.async === g.Type.UNDEFINED || options.async == null ? true : opts.async;
+	        var async = g.Type.isUndefined(opts.async) || g.Type.isNull(options.async) ? true : opts.async;
 	        
 	        if(opts.username){
 	            r.open(method, url, async, opts.username, opts.password);

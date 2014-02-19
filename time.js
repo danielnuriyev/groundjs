@@ -31,7 +31,10 @@ groundjs.TimeUnit = {
     
 }
 
-groundjs.TimeUtil = {
+groundjs.TimeUtil = function(){
+
+	var g = groundjs
+
     /**
      * Parses a string such as '1 minute', '2 hours' etc. 
      * and returns this timespan in milliseconds.
@@ -39,10 +42,10 @@ groundjs.TimeUtil = {
      * 
      * TODO: centuries, millenia
      */
-    parseTimeSpan: function(t){
+    var parseTimeSpan = function(t){
         
         if(t == null) return null;
-        if(typeof t !== groundjs.Type.STRING) throw 'Invalid argument'
+        if(!g.Type.isString(t)) throw 'Invalid argument'
         
         var re = new RegExp('[0-9]+');
         var match = re.exec(t);
@@ -72,9 +75,9 @@ groundjs.TimeUtil = {
             b.setFullYear(b.getFullYear() - v);
             return a.getTime() - b.getTime();
         } else return null;
-    },
+    }
     
-    getTimePoint: function(t){
+    var getTimePoint = function(t){
     	
         if(t == 'now'){
             return new Date().getTime()
@@ -102,4 +105,10 @@ groundjs.TimeUtil = {
             }
         }
     }
-}
+    
+    return {
+    	parseTimeSpan	:parseTimeSpan,
+    	getTimePoint	:getTimePoint
+    }
+    
+}();

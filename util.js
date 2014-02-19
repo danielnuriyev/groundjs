@@ -7,27 +7,27 @@ groundjs.StringUtil = function(){
     var g = groundjs;
 
     var isEmpty = function(s){
-    	return typeof s == g.Type.UNDEFINED || s == null || g.StringUtil.trim(s).length == 0;
+    	return g.Type.isUndefined(s) || g.Type.isNull(s) || g.StringUtil.trim(s).length == 0;
     }
     var trim = function(s){
         return s.replace(/^\s+|\s+$/g, '');
     }
     var startsWith = function(a,b){
         if(a == null || b == null) return false;
-        if(typeof a !== 'string'){
+        if(!g.Type.isString(a)){
             a = a.toString();
         }
-        if(typeof b !== 'string'){
+        if(!g.Type.isString(b)){
             b = b.toString();
         }
         return a.indexOf(b) == 0;
     }
     var endsWith = function(a,b){
         if(a == null || b == null) return false;
-        if(typeof a !== 'string'){
+        if(!g.Type.isString(a)){
             a = a.toString();
         }
-        if(typeof b !== 'string'){
+        if(!g.Type.isString(b)){
             b = b.toString();
         }
         return a.lastIndexOf(b) + b.length == a.length;
@@ -48,13 +48,13 @@ groundjs.StringUtil = function(){
         if(side != 'left' && side != 'right'){
             throw 'side must equal "left" or "right"'
         }
-        if(typeof s !== 'string'){
+        if(!g.Type.isString(s)){
             s = s.toString();
         }
-        if(typeof pad !== 'string'){
+        if(!g.Type.isString(pad)){
             pad = pad.toString();
         }
-        if(typeof max !== 'number' || max < s.length()){
+        if(!g.Type.isNumber(max) || max < s.length()){
             throw 'max must be a number';
         }
         if(max < s.length()){
@@ -81,13 +81,13 @@ groundjs.StringUtil = function(){
         return result;
     }
     var insert = function(s,index,stringToInsert){
-        if(typeof s === g.Type.UNDEFINED || s == null){
+        if(g.Type.isUndefined(s) || g.Type.isNull(s)){
             return s;
-        } else if(typeof s !== g.Type.STRING){
+        } else if(!g.Type.isString(s)){
             s = s.toString();
         }
         
-        if(typeof index !== g.Type.NUMBER){
+        if(!g.Type.isNumber(index)){
             throw 'index must be a number';
         }
         
@@ -95,7 +95,7 @@ groundjs.StringUtil = function(){
             throw 'index must be between 0 and ' + s.length;
         }
         
-        if(typeof stringToInsert === g.Type.UNDEFINED || stringToInsert == null){
+        if(g.Type.isUndefined(stringToInsert) || g.Type.isNull(stringToInsert)){
             return s;
         }
         
@@ -110,10 +110,10 @@ groundjs.StringUtil = function(){
     }
     
     var first = function(s){
-        if(typeof s == g.Type.UNDEFINED || s == null){
+        if(g.Type.isUndefined(s) || g.Type.isNull(s)){
             return s;
         }
-        if(typeof s != 'string'){
+        if(!g.Type.isString(s)){
             s = s.toString();
         }
         if(s.length() == 0){
@@ -123,10 +123,10 @@ groundjs.StringUtil = function(){
     }
     
     var last = function(s){
-        if(typeof s == g.Type.UNDEFINED || s == null){
+        if(g.Type.isUndefined(s) || g.Type.isNull(g)){
             return s;
         }
-        if(typeof s != 'string'){
+        if(!g.Type.isString(s)){
             s = s.toString();
         }
         if(s.length() == 0){
@@ -178,12 +178,12 @@ groundjs.ArrayUtil = function(){
 	var g = groundjs;
 	
 	var isEmpty = function(a){
-		if(typeof a == g.Type.UNDEFINED || a == null || a.length == 0){
+		if(g.Type.isUndefined(a) || g.Type.isNull(a) || a.length == 0){
 			return true;
 		}
 		for(var i = 0; i < a.length; i++){
 			var e = a[i];
-			if(typeof a != g.Type.UNDEFINED && a != null) return false;
+			if(!g.Type.isUndefined(a) && !g.Type.isNull(a)) return false;
 		}
 		return true;
 	}

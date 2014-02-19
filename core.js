@@ -90,7 +90,6 @@ groundjs.Type = function(){
   	    
     return {
     	
-    	//DEPRECATED: use isUndefined etc. functions instead
 	    UNDEFINED: UNDEFINED,
 	    BOOLEAN: BOOLEAN,
 	    NUMBER: NUMBER,

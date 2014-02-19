@@ -160,34 +160,34 @@ Array.prototype.binarySearch = function(find, comparator) {
 groundjs = {};
 // groundjs/util.js --------
 
-if(!groundjs) groundjs = {};
+if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs/core.js';
 
 groundjs.StringUtil = function(){
 
     var g = groundjs;
 
     var isEmpty = function(s){
-    	return typeof s == g.Type.UNDEFINED || s == null || g.StringUtil.trim(s).length == 0;
+    	return g.Type.isUndefined(s) || g.Type.isNull(s) || g.StringUtil.trim(s).length == 0;
     }
     var trim = function(s){
         return s.replace(/^\s+|\s+$/g, '');
     }
     var startsWith = function(a,b){
         if(a == null || b == null) return false;
-        if(typeof a !== 'string'){
+        if(!g.Type.isString(a)){
             a = a.toString();
         }
-        if(typeof b !== 'string'){
+        if(!g.Type.isString(b)){
             b = b.toString();
         }
         return a.indexOf(b) == 0;
     }
     var endsWith = function(a,b){
         if(a == null || b == null) return false;
-        if(typeof a !== 'string'){
+        if(!g.Type.isString(a)){
             a = a.toString();
         }
-        if(typeof b !== 'string'){
+        if(!g.Type.isString(b)){
             b = b.toString();
         }
         return a.lastIndexOf(b) + b.length == a.length;
@@ -208,13 +208,13 @@ groundjs.StringUtil = function(){
         if(side != 'left' && side != 'right'){
             throw 'side must equal "left" or "right"'
         }
-        if(typeof s !== 'string'){
+        if(!g.Type.isString(s)){
             s = s.toString();
         }
-        if(typeof pad !== 'string'){
+        if(!g.Type.isString(pad)){
             pad = pad.toString();
         }
-        if(typeof max !== 'number' || max < s.length()){
+        if(!g.Type.isNumber(max) || max < s.length()){
             throw 'max must be a number';
         }
         if(max < s.length()){
@@ -241,13 +241,13 @@ groundjs.StringUtil = function(){
         return result;
     }
     var insert = function(s,index,stringToInsert){
-        if(typeof s === g.Type.UNDEFINED || s == null){
+        if(g.Type.isUndefined(s) || g.Type.isNull(s)){
             return s;
-        } else if(typeof s !== g.Type.STRING){
+        } else if(!g.Type.isString(s)){
             s = s.toString();
         }
         
-        if(typeof index !== g.Type.NUMBER){
+        if(!g.Type.isNumber(index)){
             throw 'index must be a number';
         }
         
@@ -255,7 +255,7 @@ groundjs.StringUtil = function(){
             throw 'index must be between 0 and ' + s.length;
         }
         
-        if(typeof stringToInsert === g.Type.UNDEFINED || stringToInsert == null){
+        if(g.Type.isUndefined(stringToInsert) || g.Type.isNull(stringToInsert)){
             return s;
         }
         
@@ -270,10 +270,10 @@ groundjs.StringUtil = function(){
     }
     
     var first = function(s){
-        if(typeof s == g.Type.UNDEFINED || s == null){
+        if(g.Type.isUndefined(s) || g.Type.isNull(s)){
             return s;
         }
-        if(typeof s != 'string'){
+        if(!g.Type.isString(s)){
             s = s.toString();
         }
         if(s.length() == 0){
@@ -283,10 +283,10 @@ groundjs.StringUtil = function(){
     }
     
     var last = function(s){
-        if(typeof s == g.Type.UNDEFINED || s == null){
+        if(g.Type.isUndefined(s) || g.Type.isNull(g)){
             return s;
         }
-        if(typeof s != 'string'){
+        if(!g.Type.isString(s)){
             s = s.toString();
         }
         if(s.length() == 0){
@@ -338,12 +338,12 @@ groundjs.ArrayUtil = function(){
 	var g = groundjs;
 	
 	var isEmpty = function(a){
-		if(typeof a == g.Type.UNDEFINED || a == null || a.length == 0){
+		if(g.Type.isUndefined(a) || g.Type.isNull(a) || a.length == 0){
 			return true;
 		}
 		for(var i = 0; i < a.length; i++){
 			var e = a[i];
-			if(typeof a != g.Type.UNDEFINED && a != null) return false;
+			if(!g.Type.isUndefined(a) && !g.Type.isNull(a)) return false;
 		}
 		return true;
 	}
@@ -363,13 +363,14 @@ groundjs.ArrayUtil = function(){
         return null;
     }
 	return{
+		isArray: g.isArray,
 		isEmpty: isEmpty,
 		binarySearch: binarySearch
 	}
 }();
 // groundjs/core.js --------------------------------------------------
 
-if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
+if(!groundjs) groundjs = {};
 
 groundjs.Ground = {}
 
@@ -377,62 +378,135 @@ groundjs.Ground = {}
  * JavaScript types
  * Using groundjs.Type saves string creation
  */
-groundjs.Type = {
-    UNDEFINED: 'undefined',
-    BOOLEAN: 'boolean',
-    NUMBER: 'number',
-    STRING: 'string',
-    OBJECT: 'object',
-    FUNCTION: 'function',
-    
-    isArray: function(obj){
-        if(typeof obj === UNDEFINED || obj == null){
-            return false;
-        }
-        return typeof obj.length !== UNDEFINED;        
+groundjs.Type = function(){
+   
+    //DEPRECATED: use isUndefined etc. functions instead
+    var UNDEFINED = 'undefined'
+	var BOOLEAN = 'boolean'
+	var NUMBER = 'number'
+	var STRING = 'string'
+	var FUNCTION = 'function'
+	var OBJECT = 'object'
+	
+	var argsClass = '[object Arguments]',
+      arrayClass = '[object Array]',
+      booleanClass = '[object Boolean]',
+      dateClass = '[object Date]',
+      funcClass = '[object Function]',
+      numberClass = '[object Number]',
+      objectClass = '[object Object]',
+      regexpClass = '[object RegExp]',
+      stringClass = '[object String]';
+  
+  	var isUndefined = function(value) {
+  		return typeof value === UNDEFINED
+  	}
+  	
+  	var isNull = function(value) {
+  		return value === null
+  	}
+  	
+  	var isBoolean = function(value) {
+  		return typeof value == BOOLEAN || toString.call(value) == booleanClass
+  	}
+  	
+  	var isNumber = function(value) {
+  		return typeof value == NUMBER || toString.call(value) == numberClass
+  	} 
+  	
+  	var isString = function(value) {
+  		return typeof value == STRING || toString.call(value) == stringClass 
+  	}
+  	
+	var isFunction = function(value) {
+		return typeof value == FUNCTION
+	}
+	
+	var isObject = function(value) {
+		return typeof value = OBJECT
+	}
+	
+	var isNaN = function(value) {
+		return isNumber(value) && value !== NaN
+	}
+	
+	var isInfinity = function(value) {
+		return value === -Infinity || value === Infinity
+	}
+	
+	var isNegativeZero = function(value) {
+		return value === 0 && 1/value === -Infinity
+	}
+	
+	var isPositiveZero = function(value) {
+		return value === 0 && 1/value === Infinity
+	}
+	
+	var isArray = function(value) {
+		return toString.call(value) == arrayClass
+	}
+	
+	var isDate = function(value) {
+		return toString.call(value) == dateClass
+	}
+	
+	var isRegExp = function(value) {
+      return toString.call(value) == regexpClass
     }
     
-}
-
-groundjs.type = function(item) {
-      var getPrototype = function(item) {
-        return Object.prototype.toString.call(item).slice(8, -1);
-      };
-      var kind, Undefined;
-      if (item === null ) {
-        kind = 'null';
-      } else {
-        if ( item === Undefined ) {
-          kind = 'undefined';
-        } else {
-          var prototype = getPrototype(item);
-          if ( ( prototype === 'Number' ) && isNaN(item) ) {
-            kind = 'NaN';
-          } else {
-            kind = prototype;
-          }
-        }
-      }
-      return kind;
+    var isArguments = function(value) {
+		return toString.call(value) == argsClass
+	}
+  	    
+    return {
+    	
+	    UNDEFINED: UNDEFINED,
+	    BOOLEAN: BOOLEAN,
+	    NUMBER: NUMBER,
+	    STRING: STRING,
+	    FUNCTION: FUNCTION,
+	    OBJECT: OBJECT,
+	    
+	    isUndefined		:isUndefined,
+	    isNull			:isNull,
+	    isBoolean		:isBoolean,
+	    isNumber		:isNumber,
+	    isString		:isString,
+	    isFunction		:isFunction,
+	    isObject		:isObject,
+	    isNaN			:isNaN,
+	    isInfinity		:isInfinity,
+	    isNegativeZero	:isNegativeZero,
+	    isPositiveZero	:isPositiveZero,
+	    isArray			:isArray,
+	    isDate			:isDate,
+	    isRegExp		:isRegExp,
+	    isArguments		:isArguments  
+	    
     }
+    
+}();
 // groundjs/numUtil.js -----------------------------------------------
 
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
 if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs/core.js';
 
-groundjs.NumUtil = {
-    getRandomNumber: function(start,end){
+groundjs.NumUtil = function(){
+
+	var g = groundjs
+	
+    var getRandomNumber = function(start,end){
         var s = Number.MIN_VALUE;
         var e = Number.MAX_VALUE;
         if(start != null){
-            if(typeof start === groundjs.Type.NUMBER){
+            if(g.Type.isNumber(start)){
                 s = start;
             } else {
                 throw 'start is not a number';
             }
         }
         if(end != null){
-            if(typeof end === groundjs.Type.NUMBER){
+            if(g.Type.isNumber(end)){
                 e = end;
             } else {
                 throw 'end is not a number';
@@ -446,18 +520,26 @@ groundjs.NumUtil = {
             var range = e - s;
             return s + range * Math.random();
         }
-    },
-    getRandomArrayElement: function(obj){
+    }
+    
+    var getRandomArrayElement = function(obj){
         if(obj.length){
             return obj[Math.floor(Math.random() * obj.length)];
         } else {
             throw 'Not an array';
         }
-    },
-    isNumber :function(obj){
-    	return !isNaN(parseFloat(obj)) && isFinite(obj)
     }
-};
+    
+    var isNumber = function(obj){
+    	return g.Type.isNumber(obj)
+    }
+    
+    return {
+    	getRandomNumber			:getRandomNumber,
+    	getRandomArrayElement	:getRandomArrayElement
+    }
+    
+}();
 // groundjs/time.js --------------------------------------------------
 
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
@@ -491,7 +573,10 @@ groundjs.TimeUnit = {
     
 }
 
-groundjs.TimeUtil = {
+groundjs.TimeUtil = function(){
+
+	var g = groundjs
+
     /**
      * Parses a string such as '1 minute', '2 hours' etc. 
      * and returns this timespan in milliseconds.
@@ -499,10 +584,10 @@ groundjs.TimeUtil = {
      * 
      * TODO: centuries, millenia
      */
-    parseTimeSpan: function(t){
+    var parseTimeSpan = function(t){
         
         if(t == null) return null;
-        if(typeof t !== groundjs.Type.STRING) throw 'Invalid argument'
+        if(!g.Type.isString(t)) throw 'Invalid argument'
         
         var re = new RegExp('[0-9]+');
         var match = re.exec(t);
@@ -532,9 +617,9 @@ groundjs.TimeUtil = {
             b.setFullYear(b.getFullYear() - v);
             return a.getTime() - b.getTime();
         } else return null;
-    },
+    }
     
-    getTimePoint: function(t){
+    var getTimePoint = function(t){
     	
         if(t == 'now'){
             return new Date().getTime()
@@ -562,17 +647,25 @@ groundjs.TimeUtil = {
             }
         }
     }
-}
+    
+    return {
+    	parseTimeSpan	:parseTimeSpan,
+    	getTimePoint	:getTimePoint
+    }
+    
+}();
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
 if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs/core.js';
 
 groundjs.event = function(){
 	
-	var listeners = {};
+	var g = groundjs
+	
+	var listeners = {}
 		
 	var subscribe = function(eventType, func){
 		
-		if(typeof func != g.Type.FUNCTION) throw "event listener must be a function";
+		if(!g.Type.isFunction(func)) throw "event listener must be a function";
 		
 		if(!listeners[eventType]){
 			listeners[eventType] = new Array();
@@ -707,7 +800,7 @@ groundjs.URL = function(){
             url += '&';
         }
         
-        if(typeof parameters === g.Type.STRING){
+        if(g.Type.isString(parameters)){
             url += parameters;
         } else {
             url += g.URL.toParameters(parameters);

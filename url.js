@@ -83,7 +83,7 @@ groundjs.URL = function(){
             url += '&';
         }
         
-        if(typeof parameters === g.Type.STRING){
+        if(g.Type.isString(parameters)){
             url += parameters;
         } else {
             url += g.URL.toParameters(parameters);

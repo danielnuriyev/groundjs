@@ -3,19 +3,22 @@
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
 if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs/core.js';
 
-groundjs.NumUtil = {
-    getRandomNumber: function(start,end){
+groundjs.NumUtil = function(){
+
+	var g = groundjs
+	
+    var getRandomNumber = function(start,end){
         var s = Number.MIN_VALUE;
         var e = Number.MAX_VALUE;
         if(start != null){
-            if(typeof start === groundjs.Type.NUMBER){
+            if(g.Type.isNumber(start)){
                 s = start;
             } else {
                 throw 'start is not a number';
             }
         }
         if(end != null){
-            if(typeof end === groundjs.Type.NUMBER){
+            if(g.Type.isNumber(end)){
                 e = end;
             } else {
                 throw 'end is not a number';
@@ -29,15 +32,23 @@ groundjs.NumUtil = {
             var range = e - s;
             return s + range * Math.random();
         }
-    },
-    getRandomArrayElement: function(obj){
+    }
+    
+    var getRandomArrayElement = function(obj){
         if(obj.length){
             return obj[Math.floor(Math.random() * obj.length)];
         } else {
             throw 'Not an array';
         }
-    },
-    isNumber :function(obj){
-    	return !isNaN(parseFloat(obj)) && isFinite(obj)
     }
-};
+    
+    var isNumber = function(obj){
+    	return g.Type.isNumber(obj)
+    }
+    
+    return {
+    	getRandomNumber			:getRandomNumber,
+    	getRandomArrayElement	:getRandomArrayElement
+    }
+    
+}();
