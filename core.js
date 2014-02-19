@@ -20,7 +20,7 @@ groundjs.Type = function(){
 	
 	var argsClass = '[object Arguments]',
       arrayClass = '[object Array]',
-      boolClass = '[object Boolean]',
+      booleanClass = '[object Boolean]',
       dateClass = '[object Date]',
       funcClass = '[object Function]',
       numberClass = '[object Number]',
@@ -37,15 +37,15 @@ groundjs.Type = function(){
   	}
   	
   	var isBoolean = function(value) {
-  		return typeof value == BOOLEAN
+  		return typeof value == BOOLEAN || toString.call(value) == booleanClass
   	}
   	
   	var isNumber = function(value) {
-  		return typeof value == NUMBER
+  		return typeof value == NUMBER || toString.call(value) == numberClass
   	} 
   	
   	var isString = function(value) {
-  		return typeof value == STRING
+  		return typeof value == STRING || toString.call(value) == stringClass 
   	}
   	
 	var isFunction = function(value) {
@@ -72,8 +72,20 @@ groundjs.Type = function(){
 		return value === 0 && 1/value === Infinity
 	}
 	
-	var isArguments = function(value) {
-		return typeof value == OBJECT && toString.call(value) == argsClass
+	var isArray = function(value) {
+		return toString.call(value) == arrayClass
+	}
+	
+	var isDate = function(value) {
+		return toString.call(value) == dateClass
+	}
+	
+	var isRegExp = function(value) {
+      return toString.call(value) == regexpClass
+    }
+    
+    var isArguments = function(value) {
+		return toString.call(value) == argsClass
 	}
   	    
     return {
@@ -97,6 +109,9 @@ groundjs.Type = function(){
 	    isInfinity		:isInfinity,
 	    isNegativeZero	:isNegativeZero,
 	    isPositiveZero	:isPositiveZero,
+	    isArray			:isArray,
+	    isDate			:isDate,
+	    isRegExp		:isRegExp,
 	    isArguments		:isArguments  
 	    
     }
