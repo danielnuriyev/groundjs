@@ -1,5 +1,4 @@
-if(typeof groundjs === 'undefined') throw 'Requires groundjs/util.js';
-if(typeof groundjs.Ground === 'undefined') throw 'Requires groundjs/core.js';
+if(typeof groundjs === 'undefined') throw 'Requires groundjs/core.js';
 
 groundjs.event = function(){
 	

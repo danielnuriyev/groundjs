@@ -1,8 +1,6 @@
 // groundjs/core.js --------------------------------------------------
 
-if(!groundjs) groundjs = {};
-
-groundjs.Ground = {}
+if(typeof groundjs === 'undefined') groundjs = {};
 
 /*
  * JavaScript types

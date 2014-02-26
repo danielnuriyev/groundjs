@@ -227,7 +227,7 @@ Array.prototype.binarySearch = function(find, comparator) {
   return null;
 };
 
-// Date --------------------------------------
+// Date -------------------------------------------------------
 
 if(typeof Date.isDate === 'undefined') {
 	Date.isDate = function(value) {
@@ -243,6 +243,9 @@ if(typeof Date.isDate === 'undefined') {
 		return toString.call(value) == '[object Date]' || !isNaN( Date.parse(value) ) 
 	}
 }
+	
+	
+// RegExp -----------------------------------------------------
 	
 if(typeof RegExp.isRegExp === 'undefined') {	
 	RegExp.isRegExp = function(value) {
