@@ -57,7 +57,11 @@ groundjs.Type = function(){
 	}
 	
 	var isNaN = function(value) {
-		return isNumber(value) && value !== NaN
+		if(isUndefined(Number.isNumber)) {
+			return isNumber(value) && value != +value
+		} else {
+			return Number.isNaN(value)
+		}
 	}
 	
 	var isInfinity = function(value) {
@@ -77,7 +81,7 @@ groundjs.Type = function(){
 	}
 	
 	var isDate = function(value) {
-		return toString.call(value) == dateClass
+		return toString.call(value) == dateClass || !isNaN(Date.parse(value))
 	}
 	
 	var isRegExp = function(value) {

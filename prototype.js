@@ -1,5 +1,53 @@
 // groundjs/prototype.js --------------------------------------
+
+// Boolean ----------------------------------------------------
+
+if(typeof Boolean.isBoolean === 'undefined') {
+	Boolean.isBoolean = function(value) {
+		return typeof value == 'boolean' || toString.call(value) == '[object Boolean]'
+	}
+}
+
+// Number -----------------------------------------------------
+
+if(typeof Number.isNumber === 'undefined') {
+	Number.isNumber = function(value) {
+		return typeof value == 'number' || toString.call(value) == '[object Number]'
+	}
+}
+
+if(typeof Number.isNaN === 'undefined') {
+	Number.isNaN = function(value) {
+		var isNumber  = typeof value == 'number' || toString.call(value) == '[object Number]'
+		return isNumber && value != +value
+	}
+}
+
+if(typeof Number.isInfinity === 'undefined') {
+	Number.isInfinity = function(value) {
+		return value === -Infinity || value === Infinity
+	}
+}
+	
+if(typeof Number.isNegativeZero === 'undefined') {
+	Number.isNegativeZero = function(value) {
+		return value === 0 && 1/value === -Infinity
+	}
+}
+
+if(typeof Number.isPositiveZero === 'undefined') {	
+	Number.isPositiveZero = function(value) {
+		return value === 0 && 1/value === Infinity
+	}
+}
+
 // String -----------------------------------------------------
+
+if(typeof String.isString === 'undefined') {
+	String.isString = function(value) {
+  		return typeof value == 'string' || toString.call(value) == '[object String]' 
+  	}
+}
 
 if(typeof String.empty === 'undefined'){String.empty = '';}
 if(typeof String.dot === 'undefined'){String.dot = '.';}
@@ -61,7 +109,7 @@ if(typeof String.trim === 'undefined'){
 if(typeof String.startsWith === 'undefined'){
     String.prototype.startsWith = function(s){
         if(s == null) return false;
-        if(typeof s !== 'string'){
+        if(typeof s == 'string' || toString.call(s) == '[object String]'){
             s = s.toString();
         }
         return this.indexOf(s) == 0;
@@ -71,7 +119,7 @@ if(typeof String.startsWith === 'undefined'){
 if(typeof String.endsWith === 'undefined'){
     String.prototype.endsWith = function(s){
         if(s == null) return false;
-        if(typeof s !== 'string'){
+        if(typeof s == 'string' || toString.call(s) == '[object String]'){
             s = s.toString();
         }
         return this.lastIndexOf(s) + s.length == this.length;
@@ -94,13 +142,13 @@ if(typeof String.pad === 'undefined'){
         if(side != 'left' && side != 'right'){
             throw 'side must equal "left" or "right"'
         }
-        if(typeof s !== 'string'){
+        if(typeof s == 'string' || toString.call(s) == '[object String]'){
             s = s.toString();
         }
-        if(typeof pad !== 'string'){
+        if(typeof pad == 'string' || toString.call(pad) == '[object String]'){
             pad = pad.toString();
         }
-        if(typeof max !== 'number' || max < s.length()){
+        if(!(typeof max == 'number' || toString.call(max) == '[object Number]') || max < s.length()){
             throw 'max must be a number';
         }
         if(max < s.length()){
@@ -140,7 +188,29 @@ if(typeof String.last === 'undefined'){
     }
 }
 
+// Function ---------------------------------------------------
+
+if(typeof Function.isFunction === 'undefined') {
+	Function.isFunction = function(value) {
+		return typeof value == 'function'
+	}
+}
+
+// Object -----------------------------------------------------
+
+if(typeof Object.isObject === 'undefined') {
+	Object.isObject = function(value) {
+		return typeof value == 'object'
+	}
+}
+
 // Array ------------------------------------------------------
+
+if(typeof Array.isArray === 'undefined') {
+	Array.isArray = function(value) {
+		return toString.call(value) == '[object Array]'
+	}
+}
 
 /**
  * The array must be sorted
@@ -156,5 +226,28 @@ Array.prototype.binarySearch = function(find, comparator) {
   }
   return null;
 };
+
+// Date --------------------------------------
+
+if(typeof Date.isDate === 'undefined') {
+	Date.isDate = function(value) {
+
+		var _isNumber = function(value) {
+			return typeof value == 'number' || toString.call(value) == '[object Number]'
+		}
+	
+		var _isNaN = function(value) {
+			return _isNumber(value) && value != +value
+		}
+	
+		return toString.call(value) == '[object Date]' || !isNaN( Date.parse(value) ) 
+	}
+}
+	
+if(typeof RegExp.isRegExp === 'undefined') {	
+	RegExp.isRegExp = function(value) {
+      return toString.call(value) == '[object RegExp]'
+    }
+}
 
 groundjs = {};
