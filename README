@@ -1,11 +1,28 @@
-All existing JavaScript frameworks focus on the UI.
-The goal of groundjs is to extend JavaScript language itself.
+GroundJS is a JavaScript library that provides some basic functions lacking in JavaScript language itself.
+GroundJS focuses on the JavaScript language and not on the in-browser functionality.
+In this respect it is similar to lodash, underscore and some other commonly used libraries.
 
-We also plan to add 
-- Java implementation of CommonJS
-- Functions that will allow JavaScript to run on Java
+How GroundJS is different from lodash:
 
-You can take only the js files you need or one merged file ground.js
-For production minify the files
++ GroundJS is modular and therefore smaller. Every area of functionality is in its own js file. 
+  For example: numUtil.js, time.js, url.js 
+  You pick only the areas you need and save valuable network and cpu. 
 
-The code is simple
++ GroundJS is hierarchic. lodash exposes a list of functions all on the same level, such as _.compact, _.difference
+  This is short but I personally prefer to group functions by functionality. This makes the code easier to understand and some functions become more efficient. 
+ 
++ I think that some of my functions are more efficient that in lodash
+
+- GroundJS has only the functions that I personally have needed so far, and I am not a JavaScript or a Web UI developer.   
+
+Additional
+
+- in addition to grouping functions in namespaces such as StringUtil, ArrayUtil, URL etc., GroundJS has prototype.js where useful functions are added to JavaScript's built in objects.
+
+- For convenience I provide two merged files:
+-- ground.js that contains non browser functions only
+-- ground.browser.js contains all functions including in-browser functions such as ajax and cookie
+
+- At the moment I do not provide beautiful documentation, minification etc. But the code is small and clear. So, you can scan through it in a few minutes.
+
+Please, use and contribute!
