@@ -9,9 +9,17 @@ How GroundJS is different from lodash:
   You pick only the areas you need and save valuable network and cpu. 
 
 + GroundJS is hierarchic. lodash exposes a list of functions all on the same level, such as _.compact, _.difference
-  This is short but I personally prefer to group functions by functionality. This makes the code easier to understand and some functions become more efficient. 
+  This is short but I personally prefer to group functions by functionality. This makes the code easier to understand and some functions become more efficient.
+  Examples: groundjs.Type.isBoolean("yes"), groundjs.StringUtil.startesWith("Hi, guys", "Hi") etc.
+  BTW, you can replace groundjs by your own prefix. I usually use g:
+  var g = groundjs
+  ...
+  g.event.fire("timeElapsed")
+  
  
 + I think that some of my functions are more efficient that in lodash
+
++ I have some functions that lodash doesn't have: 
 
 - GroundJS has only the functions that I personally have needed so far, and I am not a JavaScript or a Web UI developer.   
 
