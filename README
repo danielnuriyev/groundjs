@@ -19,7 +19,7 @@ How GroundJS is different from lodash:
  
 + I think that some of my functions are more efficient that in lodash
 
-+ I have some functions that lodash doesn't have: 
++ I have some functions that lodash doesn't have: g.StringUtil.trim(strings)
 
 - GroundJS has only the functions that I personally have needed so far, and I am not a JavaScript or a Web UI developer.   
 
