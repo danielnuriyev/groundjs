@@ -28,14 +28,14 @@ if(typeof Number.isInfinity === 'undefined') {
 		return value === -Infinity || value === Infinity
 	}
 }
-	
+
 if(typeof Number.isNegativeZero === 'undefined') {
 	Number.isNegativeZero = function(value) {
 		return value === 0 && 1/value === -Infinity
 	}
 }
 
-if(typeof Number.isPositiveZero === 'undefined') {	
+if(typeof Number.isPositiveZero === 'undefined') {
 	Number.isPositiveZero = function(value) {
 		return value === 0 && 1/value === Infinity
 	}
@@ -45,7 +45,7 @@ if(typeof Number.isPositiveZero === 'undefined') {
 
 if(typeof String.isString === 'undefined') {
 	String.isString = function(value) {
-  		return typeof value == 'string' || toString.call(value) == '[object String]' 
+  		return typeof value == 'string' || toString.call(value) == '[object String]'
   	}
 }
 
@@ -138,7 +138,7 @@ if(typeof String.pad === 'undefined'){
     String.prototype.pad = function(s, pad, max, side){
         if(side == null){
             side = 'left';
-        } 
+        }
         if(side != 'left' && side != 'right'){
             throw 'side must equal "left" or "right"'
         }
@@ -235,19 +235,19 @@ if(typeof Date.isDate === 'undefined') {
 		var _isNumber = function(value) {
 			return typeof value == 'number' || toString.call(value) == '[object Number]'
 		}
-	
+
 		var _isNaN = function(value) {
 			return _isNumber(value) && value != +value
 		}
-	
-		return toString.call(value) == '[object Date]' || !isNaN( Date.parse(value) ) 
+
+		return toString.call(value) == '[object Date]' || !isNaN( Date.parse(value) )
 	}
 }
-	
-	
+
+
 // RegExp -----------------------------------------------------
-	
-if(typeof RegExp.isRegExp === 'undefined') {	
+
+if(typeof RegExp.isRegExp === 'undefined') {
 	RegExp.isRegExp = function(value) {
       return toString.call(value) == '[object RegExp]'
     }
@@ -263,7 +263,7 @@ if(typeof groundjs === 'undefined') groundjs = {};
  * Using groundjs.Type saves string creation
  */
 groundjs.Type = function(){
-   
+
     //DEPRECATED: use isUndefined etc. functions instead
     var UNDEFINED = 'undefined'
 	var BOOLEAN = 'boolean'
@@ -271,7 +271,7 @@ groundjs.Type = function(){
 	var STRING = 'string'
 	var FUNCTION = 'function'
 	var OBJECT = 'object'
-	
+
 	var argsClass = '[object Arguments]',
       arrayClass = '[object Array]',
       booleanClass = '[object Boolean]',
@@ -281,35 +281,35 @@ groundjs.Type = function(){
       objectClass = '[object Object]',
       regexpClass = '[object RegExp]',
       stringClass = '[object String]';
-  
+
   	var isUndefined = function(value) {
   		return typeof value === UNDEFINED
   	}
-  	
+
   	var isNull = function(value) {
   		return value === null
   	}
-  	
+
   	var isBoolean = function(value) {
   		return typeof value == BOOLEAN || toString.call(value) == booleanClass
   	}
-  	
+
   	var isNumber = function(value) {
   		return typeof value == NUMBER || toString.call(value) == numberClass
-  	} 
-  	
-  	var isString = function(value) {
-  		return typeof value == STRING || toString.call(value) == stringClass 
   	}
-  	
+
+  	var isString = function(value) {
+  		return typeof value == STRING || toString.call(value) == stringClass
+  	}
+
 	var isFunction = function(value) {
 		return typeof value == FUNCTION
 	}
-	
+
 	var isObject = function(value) {
-		return typeof value = OBJECT
+		return typeof value == OBJECT
 	}
-	
+
 	var isNaN = function(value) {
 		if(isUndefined(Number.isNumber)) {
 			return isNumber(value) && value != +value
@@ -317,44 +317,44 @@ groundjs.Type = function(){
 			return Number.isNaN(value)
 		}
 	}
-	
+
 	var isInfinity = function(value) {
 		return value === -Infinity || value === Infinity
 	}
-	
+
 	var isNegativeZero = function(value) {
 		return value === 0 && 1/value === -Infinity
 	}
-	
+
 	var isPositiveZero = function(value) {
 		return value === 0 && 1/value === Infinity
 	}
-	
+
 	var isArray = function(value) {
 		return toString.call(value) == arrayClass
 	}
-	
+
 	var isDate = function(value) {
 		return toString.call(value) == dateClass || !isNaN(Date.parse(value))
 	}
-	
+
 	var isRegExp = function(value) {
       return toString.call(value) == regexpClass
     }
-    
+
     var isArguments = function(value) {
 		return toString.call(value) == argsClass
 	}
-  	    
+
     return {
-    	
+
 	    UNDEFINED: UNDEFINED,
 	    BOOLEAN: BOOLEAN,
 	    NUMBER: NUMBER,
 	    STRING: STRING,
 	    FUNCTION: FUNCTION,
 	    OBJECT: OBJECT,
-	    
+
 	    isUndefined		:isUndefined,
 	    isNull			:isNull,
 	    isBoolean		:isBoolean,
@@ -369,10 +369,10 @@ groundjs.Type = function(){
 	    isArray			:isArray,
 	    isDate			:isDate,
 	    isRegExp		:isRegExp,
-	    isArguments		:isArguments  
-	    
+	    isArguments		:isArguments
+
     }
-    
+
 }();
 // groundjs/util.js --------
 
@@ -422,7 +422,7 @@ groundjs.StringUtil = function(){
     var pad = function(s, pad, max, side){
         if(side == null){
             side = 'left';
-        } 
+        }
         if(side != 'left' && side != 'right'){
             throw 'side must equal "left" or "right"'
         }
@@ -464,19 +464,19 @@ groundjs.StringUtil = function(){
         } else if(!g.Type.isString(s)){
             s = s.toString();
         }
-        
+
         if(!g.Type.isNumber(index)){
             throw 'index must be a number';
         }
-        
+
         if(index < 0 || index > s.length){
             throw 'index must be between 0 and ' + s.length;
         }
-        
+
         if(g.Type.isUndefined(stringToInsert) || g.Type.isNull(stringToInsert)){
             return s;
         }
-        
+
         if(index === 0){
             return stringToInsert + s;
         } else if(index === s.length){
@@ -484,9 +484,9 @@ groundjs.StringUtil = function(){
         } else {
             return s.substring(0,index) + stringToInsert + s.substring(index, s.length);
         }
-        
+
     }
-    
+
     var first = function(s){
         if(g.Type.isUndefined(s) || g.Type.isNull(s)){
             return s;
@@ -499,7 +499,7 @@ groundjs.StringUtil = function(){
         }
         return s.charAt(0);
     }
-    
+
     var last = function(s){
         if(g.Type.isUndefined(s) || g.Type.isNull(g)){
             return s;
@@ -512,14 +512,14 @@ groundjs.StringUtil = function(){
         }
         return s.charAt(s.length() - 1);
     }
-    
+
     var eval = function(s){
         if(!s){
             return s;
         }
-        
+
         //while(true){
-            
+
             var start = s.indexOf('{');
             //if(start == -1) break;
 
@@ -527,16 +527,16 @@ groundjs.StringUtil = function(){
             //if(end == -1) break;
 
             var exp = s.substring(start + 1, end);
-            
+
             try{
                 eval('var v = ' + exp);
             } catch(e){console.log(e)}
         //}
-        
+
         return s;
-        
+
     }
-    
+
     return {
         endsWith: endsWith,
         eval: eval,
@@ -548,13 +548,13 @@ groundjs.StringUtil = function(){
         startsWith: startsWith,
         trim: trim
     }
-    
+
 }();
 
 groundjs.ArrayUtil = function(){
 
 	var g = groundjs;
-	
+
 	var isEmpty = function(a){
 		if(g.Type.isUndefined(a) || g.Type.isNull(a) || a.length == 0){
 			return true;
@@ -565,7 +565,7 @@ groundjs.ArrayUtil = function(){
 		}
 		return true;
 	}
-		
+
     /**
      * The array must be sorted
      */
@@ -593,7 +593,7 @@ if(typeof groundjs === 'undefined') throw 'Requires groundjs/core.js';
 groundjs.NumUtil = function(){
 
 	var g = groundjs
-	
+
     var getRandomNumber = function(start,end){
         var s = Number.MIN_VALUE;
         var e = Number.MAX_VALUE;
@@ -620,7 +620,7 @@ groundjs.NumUtil = function(){
             return s + range * Math.random();
         }
     }
-    
+
     var getRandomArrayElement = function(obj){
         if(obj.length){
             return obj[Math.floor(Math.random() * obj.length)];
@@ -628,16 +628,16 @@ groundjs.NumUtil = function(){
             throw 'Not an array';
         }
     }
-    
+
     var isNumber = function(obj){
     	return g.Type.isNumber(obj)
     }
-    
+
     return {
     	getRandomNumber			:getRandomNumber,
     	getRandomArrayElement	:getRandomArrayElement
     }
-    
+
 }();
 // groundjs/time.js --------------------------------------------------
 
@@ -654,7 +654,7 @@ groundjs.TimeUnit = {
     years: 'years',
     centuries: 'centuries',
     millenia: 'millenia',
-    
+
     get: function(s){
         if(s == groundjs.TimeUnit.milliseconds) return groundjs.TimeUnit.milliseconds;
         else if(s == groundjs.TimeUnit.seconds) return groundjs.TimeUnit.seconds;
@@ -668,7 +668,7 @@ groundjs.TimeUnit = {
         else if(s == groundjs.TimeUnit.millenia) return groundjs.TimeUnit.millenia;
         else return null;
     }
-    
+
 }
 
 groundjs.TimeUtil = function(){
@@ -676,17 +676,17 @@ groundjs.TimeUtil = function(){
 	var g = groundjs
 
     /**
-     * Parses a string such as '1 minute', '2 hours' etc. 
+     * Parses a string such as '1 minute', '2 hours' etc.
      * and returns this timespan in milliseconds.
      * Supports: minutes, hours, days, weeks, months, years.
-     * 
+     *
      * TODO: centuries, millenia
      */
     var parseTimeSpan = function(t){
-        
+
         if(t == null) return null;
         if(!g.Type.isString(t)) throw 'Invalid argument'
-        
+
         var re = new RegExp('[0-9]+');
         var match = re.exec(t);
         var v = 1;
@@ -716,9 +716,9 @@ groundjs.TimeUtil = function(){
             return a.getTime() - b.getTime();
         } else return null;
     }
-    
+
     var getTimePoint = function(t){
-    	
+
         if(t == 'now'){
             return new Date().getTime()
         } else if(t.indexOf('minute') > -1
@@ -730,13 +730,13 @@ groundjs.TimeUtil = function(){
         {
             var span = groundjs.TimeUtil.parseTimeSpan(t);
             if(span) return new Date().getTime() - span;
-            
+
             try{
                 return Date.parse(t)
             }catch(e){
                 error('Date format must be: 10 Jan 2011 00:00:00')
             }
-            
+
         } else {
             try{
                 return Date.parse(t)
@@ -745,58 +745,58 @@ groundjs.TimeUtil = function(){
             }
         }
     }
-    
+
     return {
     	parseTimeSpan	:parseTimeSpan,
     	getTimePoint	:getTimePoint
     }
-    
+
 }();
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/core.js';
 
 groundjs.event = function(){
-	
+
 	var g = groundjs
-	
+
 	var listeners = {}
-		
+
 	var subscribe = function(eventType, func){
-		
+
 		if(!g.Type.isFunction(func)) throw "event listener must be a function";
-		
+
 		if(!listeners[eventType]){
 			listeners[eventType] = new Array();
 		}
-		
+
 		for(var i = 0; i < listeners[eventType].length; i++){
 			if(listeners[eventType][i] === func) return;
 		}
-		
+
 		listeners[eventType].push(func);
 	}
-	
+
 	var unsubscribe = function(eventType, func){
-		
+
 		if(listeners[eventType]){
-		
+
 			if(func){
-			
+
 				for(var i = 0; i < listeners[eventType].length; i++){
 					if(listeners[eventType][i] === func){
 						listeners[eventType].splice(i,1);
 						break;
 					}
 				}
-				
+
 				if(listeners[eventType].length == 0) delete listeners[eventType];
-			
+
 			} else {
 				delete listeners[eventType];
 			}
-		
+
 		}
 	}
-	
+
 	var fire = function(eventType, data){
 		if(listeners[eventType]){
 			for(var i = 0; i < listeners[eventType].length; i++){
@@ -804,25 +804,25 @@ groundjs.event = function(){
 			}
 		}
 	}
-	
+
 	return {
 		subscribe:subscribe,
 		unsubscribe:unsubscribe,
 		fire:fire
 		}
-	
+
 }();
 // groundjs/url.js ---------------------------------------------------
 
 if(typeof groundjs === 'undefined') throw 'Requires groundjs/core.js';
 if(typeof groundjs.Util === 'undefined') throw 'Requires groundjs/util.js';
 
-groundjs.URL = function(){ 
+groundjs.URL = function(){
     var g = groundjs;
     var parse = function(url){
 		var re = /^([^:]*:\/\/)?([^:]*:[^@]*@)?([^\/:\?]*\.?[^\/:\?]*)?(:[^\/]*)?(\/[^?#]*)?(\?[^#]*)?(#.*)?$/i;
 		var m = url.match(re);
-		
+
 		var obj = {};
 		obj.protocol = ((m[1])?m[1]:'http://').split('://')[0];
 		obj.user = (m[2])?m[2].split(':')[0]:undefined;
@@ -844,9 +844,9 @@ groundjs.URL = function(){
 			+ obj.path
 			+ ((obj.search)?'?'+obj.search:'')
 			+ ((obj.fragment)?'#'+obj.fragment:'');
-                
-       return obj;    
-                   
+
+       return obj;
+
     }
     var format = function(url){
     	return ''
@@ -867,9 +867,9 @@ groundjs.URL = function(){
      * converts a map to & separated string
      */
     var toParameters = function(obj){
-        
+
         if(obj == null) return '';
-        
+
         var s = '';
         for(var name in obj){
             if(s.length > 0){
@@ -890,13 +890,13 @@ groundjs.URL = function(){
         if(parameters.length == 0){
             return url;
         }
-        
+
         if(url.indexOf('?') == -1){
             url += '?';
         } else {
             url += '&';
         }
-        
+
         if(g.Type.isString(parameters)){
             url += parameters;
         } else {
@@ -913,9 +913,9 @@ groundjs.URL = function(){
         if(tail.length == 0){
             return g.URL.format(url);
         }
-        
+
         _url = g.URL.parse(url);
-        
+
         if(_url.fragment){
         	return url;
         } else if(_url.search){
@@ -930,16 +930,16 @@ groundjs.URL = function(){
         	*/
        		_url.search += '&' + tail;
        		return g.URL.format(_url);
-        } else if(_url.path){        	
+        } else if(_url.path){
         	var i = tail.indexOf('/');
         	if(i > -1){
         		var tmp = g.StringUtil.endsWith(_url.path, '/') ? _url.path.substring(0, _url.path.length - 1) : _url.path;
-           		tmp += g.StringUtil.startsWith(tail, '/') ? tail : '/' + tail; 
+           		tmp += g.StringUtil.startsWith(tail, '/') ? tail : '/' + tail;
            		_url.path = tmp;
         	} else {
         		//TODO: what does tail start with
         		var tmp = g.StringUtil.endsWith(_url.path, '?') ? _url.path.substring(0, _url.path.length - 1) : _url.path;
-           		tmp += g.StringUtil.startsWith(tail, '?') ? tail : '?' + tail; 
+           		tmp += g.StringUtil.startsWith(tail, '?') ? tail : '?' + tail;
            		_url.path = tmp;
         	}
         	return g.URL.format(_url);
@@ -956,12 +956,12 @@ groundjs.URL = function(){
         appendParameters:appendParameters,
         append:append
     }
-    
+
 }();
 // groundjs/color.js -------------------------------------------------
 
 groundjs.Color = {
-    
+
     random: function(){
         var color = String.pound;
         var max = 7;
@@ -972,7 +972,7 @@ groundjs.Color = {
         }
         return color;
     },
-    
+
     AliceBlue: '#F0F8FF',
     AntiqueWhite: '#FAEBD7',
     Aqua: '#00FFFF',
@@ -1120,7 +1120,7 @@ groundjs.Color = {
     WhiteSmoke: '#F5F5F5',
     Yellow: '#FFFF00',
     YellowGreen: '#9ACD32'
-    
+
 }
 // groundjs/cookie.js ------------------------------------------------
 
@@ -1134,14 +1134,14 @@ groundjs.Cookie = function(){
         if (!sKey || !this.has(sKey)) { return null; }
         return unescape(document.cookie.replace(new RegExp("(?:^|.*;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"), "$1"));
     }
-    
+
     /**
       * docCookies.setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure)
       *
       * @argument sKey (String): the name of the cookie;
       * @argument sValue (String): the value of the cookie;
       * @optional argument vEnd (Number, String, Date Object or null): the max-age in seconds (e.g., 31536e3 for a year) or the
-      *  expires date in GMTString format or in Date Object format; if not specified it will expire at the end of session; 
+      *  expires date in GMTString format or in Date Object format; if not specified it will expire at the end of session;
       * @optional argument sPath (String or null): e.g., "/", "/mydir"; if not specified, defaults to the current path of the current document location;
       * @optional argument sDomain (String or null): e.g., "example.com", ".example.com" (includes all subdomains) or "subdomain.example.com"; if not
       * specified, defaults to the host portion of the current document location;
@@ -1160,16 +1160,16 @@ groundjs.Cookie = function(){
         }
         document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
     }
-    
+
     var remove = function (sKey) {
         if (!sKey || !this.has(sKey)) { return; }
         var oExpDate = new Date();
         oExpDate.setDate(oExpDate.getDate() - 1);
         document.cookie = escape(sKey) + "=; expires=" + oExpDate.toGMTString() + "; path=/";
     }
-    
+
     var has = function (sKey) { return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie); }
-    
+
     return {
     	set :set,
     	get :get,
@@ -1219,7 +1219,7 @@ groundjs.ajax = function(opts){
      * encode params?
      * jquery props
      */
-    
+
     var readyState = {
         UNSENT:0,
         OPENED: 1,
@@ -1236,53 +1236,53 @@ groundjs.ajax = function(opts){
         if(url.length == 0){
             throw 'Empty URL';
         }
-        
+
         if(url.charAt(0) == '/'){
         	url = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + url;
         }
-        
+
         if(url.indexOf('://') == -1){//TODO: this may be in the params
             url = 'http://' + url;
         }
         if(url.indexOf('http://') != 0 && url.indexOf('https://') != 0){
             return 'Unsupported protocol';
         }
-        
-        var r = window.ActiveXObject ? 
-            (g.URL.isLocal(url) ?  new window.ActiveXObject( "Microsoft.XMLHTTP" ) : new window.XMLHttpRequest()) : 
+
+        var r = window.ActiveXObject ?
+            (g.URL.isLocal(url) ?  new window.ActiveXObject( "Microsoft.XMLHTTP" ) : new window.XMLHttpRequest()) :
             new window.XMLHttpRequest();
-                
+
         var method = opts.method;
         if(!method){
             method = g.HTTP.method.GET;
         }
-        
+
         if(method == g.HTTP.method.GET){
             if(opts.data){
                 url = g.URL.appendParameters(url,opts.data);
             }
         }
-        
+
         if(!opts.dataType){
         	opts.dataType = 'json';
         }
-        
+
         if(opts.dataType == 'jsonp' && method != g.HTTP.method.GET){
         	throw 'jsonp works with GET only';
         }
-        
+
         if(opts.dataType == 'jsonp'){
-        	
+
         	var jsonpFn = 'jsonp' + new Date().getTime();
-        	
+
         	window[jsonpFn] = function(response) {
 				if (opts.onSuccess) {
 					opts.onSuccess({data:response});
 				}
 			};
-        	
+
         	url = g.URL.append(url,'jsonp='+jsonpFn);
-        	
+
         	var head = document.getElementsByTagName && document.getElementsByTagName('head') ? document.getElementsByTagName('head')[0] : document.documentElement;
         	var script = document.createElement('script');
 			script.async = 'async';
@@ -1296,7 +1296,7 @@ groundjs.ajax = function(opts){
 			head.appendChild(script);
         } else {
 	        var async = g.Type.isUndefined(opts.async) || g.Type.isNull(options.async) ? true : opts.async;
-	        
+
 	        if(opts.username){
 	            r.open(method, url, async, opts.username, opts.password);
 	        } else {
@@ -1312,9 +1312,9 @@ groundjs.ajax = function(opts){
 	        }
 	        r.onreadystatechange = function(){
 	            if (this.readyState < readyState.DONE) return;
-	            
+
 	            //console.log(this.getAllResponseHeaders());
-	            
+
 	            if (this.status >= 200 && this.status < 300) {
 	                if(opts.onSuccess){
 	                	var response = this.responseText;
@@ -1335,11 +1335,11 @@ groundjs.ajax = function(opts){
 	                	}
 	                	opts.onSuccess(
 	                		{
-	                			data:response, 
+	                			data:response,
 	                			headers:this.getAllResponseHeaders()
 	                		}
 	                	);
-	                } 
+	                }
 	            } else {
 	                if(opts.onError){
 	                    var response = this.responseText;
@@ -1350,76 +1350,76 @@ groundjs.ajax = function(opts){
 	                        }
 	                    }
 	                    opts.onError(response);
-	                } 
+	                }
 	            }
 	        }
-	
+
 	        if(method == g.HTTP.method.POST && opts.data){
 	            r.send(g.URL.toParameters(opts.data));
-	        } else {        
+	        } else {
 	            r.send();
 	        }
-        
+
         }
-    
+
 }
 // groundjs/numUtil.js ----------------------------------------------
 
 groundjs.progress = function(){
 
 	var timers = {}
-	
+
 	var start = function(divId, max, value, interval, cls, styles, factor){
-    	
+
 		//console.log('max: ' + max + ", val: " + value + ", " + factor )
-		
+
 		if(!factor) factor = 2;
-		
+
     	var next = true;
-    	
+
     	var div = document.getElementById('progress_' + divId);
     	if(value > max - max/factor){
     		max *= factor;
     		div.setAttribute('max', '' + max);
-    		value *= factor; 
+    		value *= factor;
     		factor *= 2;
     	}
-    	
+
     	if(value >= max){
     		value = max - 1;
     		next = false;
     	}
-    	
+
     	if(div){
     		div.setAttribute('value', '' + value);
     	} else {
     		div = document.getElementById(divId);
         	div.innerHTML = '<progress id="progress_' + divId + '" value="' + value + '" max="' + max + '"' +
         		(cls ? ' class="' + cls + '" ' : '') +
-        		(styles ? ' style="' + styles + '" ' : '') + 
+        		(styles ? ' style="' + styles + '" ' : '') +
         		'></progress>';
     	}
-    	
+
     	if(next){
     		timers[divId] = setTimeout(function(){
 	    		groundjs.progress.start(divId, max, ++value, interval, cls, styles, factor);
 	    	}, interval);
     	}
-    	
+
     }
-	
+
 	var hide = function(divId){
-		
+
 		clearTimeout(timers[divId]);
 		delete timers[divId];
-		
+
 		var div = document.getElementById('progress_' + divId);
     	if(div){
     		div = document.getElementById(divId);
     		div.innerHTML = '';
-    	}   		
+    	}
     }
-	
+
 	return {
 		start: start,
 		hide: hide

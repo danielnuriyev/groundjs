@@ -7,7 +7,7 @@ if(typeof groundjs === 'undefined') groundjs = {};
  * Using groundjs.Type saves string creation
  */
 groundjs.Type = function(){
-   
+
     //DEPRECATED: use isUndefined etc. functions instead
     var UNDEFINED = 'undefined'
 	var BOOLEAN = 'boolean'
@@ -15,7 +15,7 @@ groundjs.Type = function(){
 	var STRING = 'string'
 	var FUNCTION = 'function'
 	var OBJECT = 'object'
-	
+
 	var argsClass = '[object Arguments]',
       arrayClass = '[object Array]',
       booleanClass = '[object Boolean]',
@@ -25,35 +25,35 @@ groundjs.Type = function(){
       objectClass = '[object Object]',
       regexpClass = '[object RegExp]',
       stringClass = '[object String]';
-  
+
   	var isUndefined = function(value) {
   		return typeof value === UNDEFINED
   	}
-  	
+
   	var isNull = function(value) {
   		return value === null
   	}
-  	
+
   	var isBoolean = function(value) {
   		return typeof value == BOOLEAN || toString.call(value) == booleanClass
   	}
-  	
+
   	var isNumber = function(value) {
   		return typeof value == NUMBER || toString.call(value) == numberClass
-  	} 
-  	
-  	var isString = function(value) {
-  		return typeof value == STRING || toString.call(value) == stringClass 
   	}
-  	
+
+  	var isString = function(value) {
+  		return typeof value == STRING || toString.call(value) == stringClass
+  	}
+
 	var isFunction = function(value) {
 		return typeof value == FUNCTION
 	}
-	
+
 	var isObject = function(value) {
-		return typeof value = OBJECT
+		return typeof value == OBJECT
 	}
-	
+
 	var isNaN = function(value) {
 		if(isUndefined(Number.isNumber)) {
 			return isNumber(value) && value != +value
@@ -61,44 +61,44 @@ groundjs.Type = function(){
 			return Number.isNaN(value)
 		}
 	}
-	
+
 	var isInfinity = function(value) {
 		return value === -Infinity || value === Infinity
 	}
-	
+
 	var isNegativeZero = function(value) {
 		return value === 0 && 1/value === -Infinity
 	}
-	
+
 	var isPositiveZero = function(value) {
 		return value === 0 && 1/value === Infinity
 	}
-	
+
 	var isArray = function(value) {
 		return toString.call(value) == arrayClass
 	}
-	
+
 	var isDate = function(value) {
 		return toString.call(value) == dateClass || !isNaN(Date.parse(value))
 	}
-	
+
 	var isRegExp = function(value) {
       return toString.call(value) == regexpClass
     }
-    
+
     var isArguments = function(value) {
 		return toString.call(value) == argsClass
 	}
-  	    
+
     return {
-    	
+
 	    UNDEFINED: UNDEFINED,
 	    BOOLEAN: BOOLEAN,
 	    NUMBER: NUMBER,
 	    STRING: STRING,
 	    FUNCTION: FUNCTION,
 	    OBJECT: OBJECT,
-	    
+
 	    isUndefined		:isUndefined,
 	    isNull			:isNull,
 	    isBoolean		:isBoolean,
@@ -113,8 +113,8 @@ groundjs.Type = function(){
 	    isArray			:isArray,
 	    isDate			:isDate,
 	    isRegExp		:isRegExp,
-	    isArguments		:isArguments  
-	    
+	    isArguments		:isArguments
+
     }
-    
+
 }();
