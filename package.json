@@ -1,0 +1,29 @@
+{
+  "name": "groundjs",
+  "version": "0.0.1",
+  "description": "My pre-lodash and pre-jquery js utility library.",
+  "main": "src/ground.js",
+  "scripts": {
+    "build": "npm run babel && cat ./dist/core.js ./dist/util.js ./dist/numUtil.js ./dist/time.js ./dist/event.js ./dist/url.js ./dist/color.js > ./ground.js",
+    "build-for-browser": "npm run build && cat ground.js ./src/cookie.js > ground.browser.js",
+    "babel": "babel ./src -d ./dist -s"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielnuriyev/groundjs.git"
+  },
+  "author": "Daniel Nuriyev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danielnuriyev/groundjs/issues"
+  },
+  "homepage": "https://github.com/danielnuriyev/groundjs#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "nodemon": "^1.18.9"
+  }
+}

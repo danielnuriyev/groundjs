@@ -137,7 +137,7 @@ groundjs.StringUtil = function(){
         return s.charAt(s.length() - 1);
     }
     
-    var eval = function(s){
+    var exec = function(s){
         if(!s){
             return s;
         }
@@ -153,7 +153,7 @@ groundjs.StringUtil = function(){
             var exp = s.substring(start + 1, end);
             
             try{
-                eval('var v = ' + exp);
+                exec('var v = ' + exp);
             } catch(e){console.log(e)}
         //}
         
@@ -163,7 +163,7 @@ groundjs.StringUtil = function(){
     
     return {
         endsWith: endsWith,
-        eval: eval,
+        exec: exec,
         first: first,
         insert: insert,
         isEmpty: isEmpty,

@@ -1,36 +1,22 @@
-GroundJS is a JavaScript library that provides some basic functions lacking in JavaScript language itself.
-GroundJS focuses on the JavaScript language and not on the in-browser functionality.
-In this respect it is similar to lodash, underscore and some other commonly used libraries.
+## What
 
-How GroundJS is different from lodash:
+GroundJS provides JavaScript functions lacking JS.
+Much of this stuff is already in JS itself or in lodash.
+You can use each file individually.
+For convenience I have created 3 merged files:
+- ground.js
+- ground.browser.js = ground.js + cookie.js
+- prototype.js - functions attached to JS built-in objects
 
-+ GroundJS is modular and therefore smaller. Every area of functionality is in its own js file. 
-  For example: numUtil.js, time.js, url.js 
-  You pick only the areas you need and save valuable network and cpu. 
+## Download and build
 
-+ GroundJS is hierarchic. lodash exposes a list of functions all on the same level, such as _.compact, _.difference
-  This is short but I personally prefer to group functions by functionality. This makes the code easier to understand and some functions become more efficient.
-  Examples: groundjs.Type.isBoolean("yes"), groundjs.StringUtil.startesWith("Hi, guys", "Hi") etc.
-  BTW, you can replace groundjs by your own prefix. I usually use g:
-  var g = groundjs
-  ...
-  g.event.fire("timeElapsed")
-  
- 
-+ I think that some of my functions are more efficient that in lodash
+ground.js and ground.browser.js are prebuilt but you can clone the repo and run `npm run build` - this will regenerate the 2 files.
 
-+ I have some functions that lodash doesn't have: g.StringUtil.trim(strings)
+## Use
 
-- GroundJS has only the functions that I personally have needed so far, and I am not a JavaScript or a Web UI developer.   
+g = groundjs;
 
-Additional
+const parsedUrl = g.URL.parse(someUrl); // etc.
 
-- in addition to grouping functions in namespaces such as StringUtil, ArrayUtil, URL etc., GroundJS has prototype.js where useful functions are added to JavaScript's built in objects.
-
-- For convenience I provide two merged files:
--- ground.js that contains non browser functions only
--- ground.browser.js contains all functions including in-browser functions such as ajax and cookie
-
-- At the moment I do not provide beautiful documentation, minification etc. But the code is small and clear. So, you can scan through it in a few minutes.
-
-Please, use and contribute!
+## TODO
+list of all functions with examples
